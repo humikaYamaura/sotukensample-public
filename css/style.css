@@ -4,6 +4,15 @@ html{
 input[type="button"]{
     cursor: pointer;
 }
+#exit-button{
+    width: 200px;
+    height: 50px;
+    margin: 30px 5% 0 30px;
+    border-radius: 30px;
+    background-color: rgb(0,162,255);
+    border: none;
+    font-size: 20px;
+}
 
 /* ここからトップ画面 */
 #mode{
@@ -34,7 +43,7 @@ input[type="button"]{
     margin: auto;
     padding: 20px;
     text-align: center;
-    border: solid 8px rgb(168, 174, 255);
+    border: solid 6px rgb(168, 174, 255);
     box-shadow: 15px 13px 0 rgb(168, 174, 255);
 }
 #type input[type="button"]{
@@ -52,7 +61,7 @@ input[type="button"]{
     text-align: right;
     margin-top: 20px;
 }
-input[type="submit"]{
+#button-area input[type="submit"]{
     width: 300px;
     height: 80px;
     margin: 10px;
@@ -64,3 +73,33 @@ input[type="submit"]{
     font-size: 20px;
 }
 /* ここまでトップ画面 */
+/* ここから解説評価(詐欺体験) */
+#feedback h2{
+    margin: 0 0 0 8%;
+    font-size: 30px;
+}
+#feedback p{
+    max-width: 1150px;
+    height: 140px;
+    margin: 10px auto 50px auto;
+    background-color: white;
+    border-radius: 34px;
+    border: solid 6px rgb(168,174,255);
+    box-shadow: 15px 13px 0 rgb(168,174,255);
+    padding: 15px 30px;
+    overflow-y: scroll;
+    font-size: 20px;
+}
+#feedback p::-webkit-scrollbar{
+    width: 33px;
+    margin-right: 5%;
+    background-color: transparent;
+}
+#feedback p::-webkit-scrollbar-thumb{
+    border-right: 20px solid transparent;
+    background-clip: padding-box;
+    background-color: rgb(189,226,255);
+
+}
+
+/* ここまで解説評価(詐欺体験) */

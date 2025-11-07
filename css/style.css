@@ -1,3 +1,66 @@
 html{
     background-color: rgb(230,244,241);
 }
+input[type="button"]{
+    cursor: pointer;
+}
+
+/* ここからトップ画面 */
+#mode{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+#mode input[type="button"]{
+    margin: 0;
+    padding: 0;
+    width: 40%;
+    height: 85px;
+    border-radius: 25px 25px 0 0;
+    border: none;
+    font-size: 25px;
+}
+#mode #trial{
+    background-color: rgb(168, 174, 255);
+}
+#mode #quiz{
+    background-color: rgb(103,231,212);
+}
+#type{
+    background-color: white;
+    border-radius: 34px;
+    max-width: 1291px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    border: solid 8px rgb(168, 174, 255);
+    box-shadow: 15px 13px 0 rgb(168, 174, 255);
+}
+#type input[type="button"]{
+    width: auto;
+    min-width: 200px;
+    height: 80px;
+    margin: 30px;
+    padding: 0 50px;
+    border-radius: 25px;
+    background-color: rgb(189,226,255);
+    border: none;
+    font-size: 20px;
+}
+#button-area{
+    text-align: right;
+    margin-top: 20px;
+}
+input[type="submit"]{
+    width: 300px;
+    height: 80px;
+    margin: 10px;
+    margin-right: 10%;
+    padding: 20px;
+    border-radius: 25px;
+    background-color: rgb(255,184,61);
+    border: none;
+    font-size: 20px;
+}
+/* ここまでトップ画面 */

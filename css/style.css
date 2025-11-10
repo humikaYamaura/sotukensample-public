@@ -95,7 +95,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     align-content: center;
     border-radius: 25px;
     background-color: white;
-    border: solid 6px rgb(121, 197, 255);
+    border: solid 5px rgb(121, 197, 255);
     font-size: 20px;
 }
 #type .label:hover{

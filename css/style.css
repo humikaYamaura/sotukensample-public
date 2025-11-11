@@ -174,3 +174,135 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 }
 
 /* ここまで解説評価(クイズ) */
+
+
+
+/* ここからチャット画面 */
+
+#chat{
+    background-color: white;
+    border-radius: 34px;
+    max-width: 1291px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    border: solid 8px rgb(168, 174, 255);
+    box-shadow: 15px 13px 0 rgb(168, 174, 255);
+    margin-bottom: 30px;
+    text-align: left;
+    
+}
+
+
+#scroll{
+    height: 300px; /* 高さを指定 */
+    overflow: auto;
+    overflow-x: hidden;
+    scrollbar-color: #BDE2FF transparent;
+    scrollbar-width: auto; 
+}
+
+.mycomment, .aicomment {
+    margin: 10px 0;
+    display: flex;
+}
+
+.mycomment {
+    justify-content: flex-end;
+}
+
+.aicomment {
+    justify-content: flex-start;
+}
+
+/* ユーザー（右側）吹き出し */
+.mycomment p {
+    position: relative;
+    margin: 0 0 0 10px;
+    padding: 8px;
+    max-width: 500px;
+    border-radius: 12px;
+    background: #BDE2FF;
+    font-size: 15px;
+}
+
+.mycomment p:after {
+    content: "";
+    position: absolute;
+    top: 3px; 
+    right: -19px;
+    border: 8px solid transparent;
+    border-left: 18px solid #BDE2FF;
+    transform: rotate(-35deg);
+}
+
+/* AI（左側）吹き出し */
+.aicomment p {
+    position: relative;
+    margin: 0 10px 0 0;
+    padding: 8px;
+    max-width: 500px;
+    border-radius: 12px;
+    background: #B7C8FF;
+    font-size: 15px;
+}
+
+.aicomment p:after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: -19px;
+    border: 8px solid transparent;
+    border-right: 18px solid #B7C8FF;
+    transform: rotate(35deg);
+}
+
+
+#field{   
+    position: relative;
+    background-color: rgba(189, 226, 255, 1);
+    border-radius: 14px;
+    max-width: 1291px;
+    margin: auto;
+    width: auto;
+    border: solid 8px rgba(189, 226, 255, 1);
+    
+}
+
+form{
+    display: flex;
+    gap: 15px;  
+
+}
+
+#textarea {
+    border: none;
+    outline: none;
+    border-radius: 14px;
+    padding: 5px 15px;
+    font-size: 20px;
+    width: 93%;
+    height: 30px; 
+    text-align: left;
+    box-sizing: border-box;
+    display: block; 
+    resize: none; 
+    overflow: hidden;
+    min-height: 30px;
+}
+
+#displayButton{
+    all: unset;
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 25px solid rgb(255,184,61); /* 三角形の色 */
+    background: none;
+    cursor: pointer; 
+    overflow: visible;
+    position: absolute;
+    bottom: 0px;       
+    right: 15px;        
+}
+/* ここまでチャット画面 */

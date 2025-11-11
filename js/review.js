@@ -4,6 +4,15 @@ const review = document.getElementById("review");
 
 //ここにモードを識別する変数を用意
 //const mode =localStorage.getItem("mode");
+/*if(mode != null){
+    if(mode == "詐欺判定クイズ"){
+        //ここに正解・不正解を表示するコードを書く
+    }
+}else{
+    //トップページに遷移
+    window.location.href = "index.html";
+}
+*/
 
 //一時的に「オレオレ詐欺」を設定
 const type = "オレオレ詐欺"; 

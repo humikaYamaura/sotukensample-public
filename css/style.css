@@ -19,7 +19,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     background-color: rgb(34, 223, 223);
     border: 1px solid rgb(6, 101, 196);
     box-shadow: none;
-    transform: translateY(13px);
+    transform: translateY(10px);
 }
 
 #button-area{
@@ -44,7 +44,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     background-color: rgb(253, 216, 97);
     border: none !important;
     box-shadow: none !important;
-    transform: translateY(13px);
+    transform: translateY(10px);
 }
 
 /* ここからトップ画面 */
@@ -106,6 +106,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 #type .label:hover{
     background-color: rgba(121, 197, 255,0.5);
     transition: all 0.15s ease;
+    border: dotted 5px rgb(121, 197, 255);
 }
 #type input[type="radio"]:checked + .label{
     background-color: rgb(121, 197, 255);
@@ -121,6 +122,11 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     border: solid 5px rgba(121, 197, 255,0.5);
     border-radius: 20px;
     box-shadow: 10px 8px 0 rgba(121, 197, 255,0.5);
+}
+
+#type #explain::before,#type #explain::after{
+    content: "📖";
+    font-size: 30px;
 }
 /* ここまでトップ画面 */
 
@@ -155,9 +161,6 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 }
 
 /* ここまで解説評価(詐欺体験) */
-
-
-
 /* ここから解説評価(クイズ) */
 #quiz-review h1{
     text-align: center;

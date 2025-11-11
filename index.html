@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>トップ画面</title>
     <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
 </head>
 <body>
     <div id ="mode">
@@ -11,6 +12,7 @@
         <input type="button" id="quiz" value="詐欺判定クイズ">
     </div>
     <div id ="type">
+        <!-- 詐欺種類の追加を行った場合、index.jsの変数expalin_textの更新も行うこと -->
         <input type ="radio" name="types" value="オレオレ詐欺" id="オレオレ詐欺" checked>
         <label for="オレオレ詐欺" class="label">オレオレ詐欺</label>
 
@@ -26,10 +28,10 @@
         <input type ="radio" name="types" value="SNS・マッチングアプリ詐欺" id="SNS・マッチングアプリ詐欺">
         <label for="SNS・マッチングアプリ詐欺" class="label">SNS・マッチングアプリ詐欺</label>
 
-        <p id="explain">画面が簡素な気がしたため、ここに選択した詐欺の説明を表示するのはどうかああああああああああああああああああああああああああああああああああああああああ</p>
+        <p id="explain">画面が簡素な気がしたため、ここに選択した詐欺の説明を表示するのはどうか<br>ああああああああああああああああああああああああああああああああああああああああ</p>
     </div>
     <div id="button-area">
-        <input type="submit" value="決定" id="submit">
+        <input type="submit" value="☑ 決定" id="submit">
     </div>
     <script src="js/index.js"></script>
 </body>

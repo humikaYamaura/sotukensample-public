@@ -14,7 +14,7 @@ trial_button.addEventListener("click", () => {
     type_area.style.border= "solid 6px rgb(168, 174, 255)";
     type_area.style.boxShadow = "15px 13px 0 rgb(168, 174, 255)";
     submit_button.style.boxShadow = "0 10px 0 rgb(136, 142, 235)";
-    submit_button.style.border = "4px solid rgb(136, 142, 235)";
+    submit_button.style.border = "3px solid rgb(136, 142, 235)";
 });
 
 //詐欺体験クイズボタン
@@ -24,8 +24,8 @@ quiz_button.addEventListener("click", () => {
     quiz_button.style.backgroundColor = "rgb(103,231,212)";
     type_area.style.border= "solid 6px rgb(103,231,212)";
     type_area.style.boxShadow = "15px 13px 0 rgb(103,231,212)";
-    submit_button.style.boxShadow = "0 10px 0 rgb(73, 206, 186)";
-    submit_button.style.border = "4px solid rgb(73, 206, 186)";
+    submit_button.style.boxShadow = "0 10px 0 rgba(40, 176, 155, 1)";
+    submit_button.style.border = "3px solid rgba(40, 176, 155, 1)";
 });
 
 //選択した詐欺種類の取得

@@ -11,11 +11,13 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     border-radius: 30px;
     background-color: rgb(0,162,255);
     box-shadow: 0 10px 0 rgb(6, 101, 196);
-    border: none;
+    border: 3px solid rgb(6, 101, 196);
     font-size: 20px;
     transition: all 0.15s ease;
 }
 #exit-button:hover{
+    background-color: rgb(34, 223, 223);
+    border: 1px solid rgb(6, 101, 196);
     box-shadow: none;
     transform: translateY(13px);
 }
@@ -32,12 +34,15 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     padding: 20px;
     border-radius: 25px;
     background-color: rgb(255,184,61);
-    box-shadow: 0 10px 0 rgb(168, 174, 255);
-    border: none;
+    border: 3px solid rgb(136, 142, 235);
+    box-shadow: 0 10px 0 rgb(136, 142, 235);
+
     font-size: 20px;
     transition: all 0.15s ease;
 }
 #button-area input[type="submit"]:hover{
+    background-color: rgb(253, 216, 97);
+    border: none !important;
     box-shadow: none !important;
     transform: translateY(13px);
 }
@@ -106,7 +111,20 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     background-color: rgb(121, 197, 255);
     transition: all 0.15s ease;
 }
+
+#type #explain{
+    max-width: 750px;
+    min-height: 100px;
+    align-content: center;
+    margin: auto;
+    padding: 5px 20px;
+    border: solid 5px rgba(121, 197, 255,0.5);
+    border-radius: 20px;
+    box-shadow: 10px 8px 0 rgba(121, 197, 255,0.5);
+}
 /* ここまでトップ画面 */
+
+
 /* ここから解説評価(詐欺体験) */
 #feedback h2{
     margin: 75px 0 0 8%;

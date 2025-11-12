@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        textarea { width: 80%; height: 100px; margin-bottom: 10px; }
+        button { padding: 10px 20px; }
+        #output { margin-top: 20px; border: 1px solid #ccc; padding: 10px; min-height: 50px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Gemini API テスト</h1>
+    <textarea id="promptInput" placeholder="ここにGeminiに尋ねたいことを入力してください..."></textarea>
+    <button id="generateButton">生成</button>
+    <div id="output"></div>
+
+    <script>
+        // ここにJavaScriptコードを記述します
+
+        
+        // ⚠️ 注意: この方法はセキュリティリスクがあるため、本番環境では使用しないでください。
+// 学習目的で一時的にAPIキーを直接記述しています。
+const API_KEY = "AIzaSyDB2UCYQ7tbaVT9Wru7sg2DgoZq52lPQuQ"; // 取得したAPIキーをここに貼り付けてください
+const MODEL_NAME = "gemini-2.5-pro"; // 使用するGeminiモデルの名前 (例: gemini-pro)
+
+const promptInput = document.getElementById('promptInput');
+const generateButton = document.getElementById('generateButton');
+const outputDiv = document.getElementById('output');
+
+generateButton.addEventListener('click', async () => {
+    const userPrompt = promptInput.value;
+    if (!userPrompt) {
+        outputDiv.textContent = "プロンプトを入力してください。";
+        return;
+    }
+
+    outputDiv.textContent = "生成中...";
+
+    try {
+        // Gemini APIのエンドポイント
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: userPrompt
+                    }]
+                }]
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`APIエラー: ${response.status} - ${errorData.error.message}`);
+        }
+
+        const data = await response.json();
+        console.log(data); // デバッグ用にレスポンス全体を確認
+
+        // 生成されたテキストを抽出
+        if (data.candidates && data.candidates.length > 0 && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts.length > 0) {
+            outputDiv.textContent = data.candidates[0].content.parts[0].text;
+        } else {
+            outputDiv.textContent = "応答がありませんでした。";
+        }
+
+    } catch (error) {
+        console.error("エラーが発生しました:", error);
+        outputDiv.textContent = `エラー: ${error.message}`;
+    }
+});
+    </script>
+</body>
+</html>

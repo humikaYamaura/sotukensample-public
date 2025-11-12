@@ -53,4 +53,12 @@ document.getElementById("submit").addEventListener("click", () => {
         }
     }
     console.log("モード:" + mode +" 詐欺種類:" + selectType);
+    //sessionStorage.setItem("mode", mode);
+    //sessionStorage.setItem("type", selectType);
+
+    if(mode == "詐欺体験"){
+        location.href = "chat.html";
+    }else if(mode == "詐欺体験クイズ"){
+
+    }
 });

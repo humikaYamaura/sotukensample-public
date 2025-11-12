@@ -27,6 +27,8 @@ window.addEventListener('DOMContentLoaded', function() {
     aiP.textContent = "こんにちは！";
     firstAiComment.appendChild(aiP);
     chatBox.appendChild(firstAiComment);
+
+    speak("こんにちは！",2);
 });
 
 
@@ -60,7 +62,22 @@ document.getElementById('displayButton').addEventListener('click', function() {
         aiComment.appendChild(aiP);
         chatBox.appendChild(aiComment);
 
+        speak("テスト",2);
         // 一番下までスクロール
         chatBox.scrollTop = chatBox.scrollHeight;
     }, 500);
 });
+
+//読み上げ機能
+const uttr = new SpeechSynthesisUtterance();
+const speak = function(text,v){
+    const voice = speechSynthesis.getVoices().filter((v) => v.lang === 'ja-JP');
+    console.log(voice);
+    uttr.text = text;
+    uttr.voice = voice[v];
+    console.log(voice[v]);
+    uttr.lang = 'ja-JP';
+    uttr.rate = 1.0;
+    uttr.pitch = 1.0;
+    window.speechSynthesis.speak(uttr);
+}

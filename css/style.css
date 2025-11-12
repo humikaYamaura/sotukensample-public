@@ -277,6 +277,18 @@ form{
     gap: 15px;  
 
 }
+#voice-area{
+    margin: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#voice-area select{
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 5px;
+}
 
 #textarea {
     border: none;

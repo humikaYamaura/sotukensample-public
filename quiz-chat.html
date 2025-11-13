@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>トップ画面</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- TOPボタン -->
+    <div id="button-area">
+        <input type="button" id="exit-button" value="TOP↩" onclick="location.href='index.html'">
+    </div>
+    <h1>オレオレ詐欺</h1>
+
+
+    <div id ="quiz-chat">
+        <div id="scroll">
+
+        </div>
+    </div>
+    
+
+    <div id ="field">
+        <form action="#" id="form">
+            <textarea id="textarea" placeholder="入力欄" style="height: 30px;" ></textarea>
+            <button type="submit" id="displayButton"></button>
+        </form>
+    </div>
+
+    <div id="button-area">
+        <form id="quiz-form">
+            <label>
+                <input type="radio" name="quiz-answer" value="yes" required>はい
+            </label>
+            <label>
+                <input type="radio" name="quiz-answer" value="no">いいえ
+            </label>
+            <input type="submit" value="終了">
+        </form>
+    </div>
+
+
+    <script src="js/chat.js"></script>
+</body>
+</html

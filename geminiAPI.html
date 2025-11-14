@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini API Test - 口調制御デモ</title>
+    <!-- CSSファイルを読み込み。パスは「css/style.css」と指定されています -->
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+</head>
+<body>
+    <!-- メインコンテンツを囲むコンテナ -->
+    <div class="container">
+        <!-- ページのタイトル -->
+        <h1>Gemini API テスト - 口調制御版</h1>
+
+        <!-- 口調選択ドロップダウンのラッパー -->
+        <div style="margin-bottom: 15px; text-align: left;">
+            <label for="toneSelector" style="font-weight: bold; margin-right: 10px;">回答の口調を選択:</label>
+            <!-- 回答の口調を選択するドロップダウンメニュー -->
+            <select id="toneSelector" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                <option value="friendly">フレンドリーで親しみやすい口調</option>
+                <option value="polite">丁寧でフォーマルな口調</option>
+                <option value="technical">専門的で技術的な口調</option>
+                <option value="neutral" selected>中立的で客観的な口調</option>
+                <!-- 倫理的な考慮が必要ですが、ご要望に応じて追加 -->
+                <option value="scam">詐欺師の口調</option>
+            </select>
+        </div>
+
+        <!-- ユーザーがGeminiに尋ねる内容を入力するテキストエリア -->
+        <textarea id="promptInput" placeholder="ここにGeminiに尋ねたいことを入力してください..." rows="5"></textarea>
+
+        <!-- Geminiへのリクエストを送信するボタン -->
+        <button id="generateButton">生成</button>
+
+        <!-- Geminiからの応答が表示される領域 -->
+        <div id="output">
+            <p>ここにGeminiからの応答が表示されます。</p>
+        </div>
+    </div>
+
+    <!-- JavaScriptファイルを読み込み。パスは「js/script.js」と指定されています -->
+    <script src="js/script.js"></script>
+</body>
+</html>

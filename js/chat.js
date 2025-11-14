@@ -22,11 +22,20 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // 最初からAIの吹き出しを表示
     const firstAiComment = document.createElement('div');
-    firstAiComment.classList.add('aicomment');
     const aiP = document.createElement('p');
     aiP.textContent = "こんにちは！";
     firstAiComment.appendChild(aiP);
     chatBox.appendChild(firstAiComment);
+
+    // 現在のHTMLファイル名を取得
+    const pageName = window.location.pathname.split('/').pop();
+
+    // ページごとにクラスを分ける
+    if (pageName === 'chat.html') {
+        firstAiComment.classList.add('aicomment');
+    } else if (pageName === 'quiz-chat.html') {
+        firstAiComment.classList.add('quiz-aicomment');
+    }
 
     speak("こんにちは！");
 });
@@ -67,6 +76,7 @@ mike_button.addEventListener('click', function() {
     }
 });
 
+
 document.getElementById('displayButton').addEventListener('click', function() {
     const inputTextarea = document.getElementById('textarea');
     const chatBox = document.getElementById('scroll');
@@ -95,6 +105,17 @@ document.getElementById('displayButton').addEventListener('click', function() {
         aiP.textContent = "テスト";
         aiComment.appendChild(aiP);
         chatBox.appendChild(aiComment);
+
+        // 現在のHTMLファイル名を取得
+        const pageName = window.location.pathname.split('/').pop();
+
+        // ページごとにクラスを分ける
+        if (pageName === 'chat.html') {
+            aiComment.classList.add('aicomment');
+        } else if (pageName === 'quiz-chat.html') {
+            aiComment.classList.add('quiz-aicomment');
+        }
+
 
         speak("テスト");
         // 一番下までスクロール
@@ -141,3 +162,14 @@ const speak = function(text){
     uttr.pitch = 1.0;
     window.speechSynthesis.speak(uttr);
 }
+
+
+document.getElementById("quiz-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // 通常の送信を止める
+
+    // 選択されたラジオボタンの値を取得
+    const answer = document.querySelector('input[name="quiz-answer"]:checked').value;
+
+    // 結果ページに値をURLで渡して遷移
+    window.location.href = `quiz-review.html?answer=${answer}`;
+});

@@ -205,7 +205,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     scrollbar-width: auto; 
 }
 
-.mycomment, .aicomment {
+.mycomment, .aicomment , .quiz-aicomment{
     margin: 10px 0;
     display: flex;
 }
@@ -214,7 +214,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     justify-content: flex-end;
 }
 
-.aicomment {
+.aicomment , .quiz-aicomment {
     justify-content: flex-start;
 }
 
@@ -272,7 +272,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     
 }
 
-form{
+#form{
     display: flex;
     gap: 15px;  
 
@@ -347,3 +347,42 @@ form{
     right: 15px;        
 }
 /* ここまでチャット画面 */
+
+
+/* ここからクイズチャット画面 */
+
+#quiz-chat{
+    background-color: white;
+    border-radius: 34px;
+    max-width: 1291px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    border: solid 8px rgba(103, 231, 212, 1);
+    box-shadow: 15px 13px 0 rgba(103, 231, 212, 1);
+    margin-bottom: 30px;
+    text-align: left;  
+}
+/* AI（左側）吹き出し */
+.quiz-aicomment p {
+    position: relative;
+    margin: 0 10px 0 0;
+    padding: 8px;
+    max-width: 500px;
+    border-radius: 12px;
+    background: #97F7E4;
+    font-size: 15px;
+}
+
+.quiz-aicomment p:after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: -19px;
+    border: 8px solid transparent;
+    border-right: 18px solid #97F7E4;
+    transform: rotate(35deg);
+}
+
+
+/* ここまでクイズチャット画面 */

@@ -37,3 +37,14 @@ const typeText = function(text,innerHTML,interval){
 };
 typeText(explanation_text,explanation,50);
 typeText(review_text,review,50);
+
+//正解・不正解判定
+const params = new URLSearchParams(location.search);
+const answer = params.get("answer");
+const msg = document.getElementById("message");
+
+if (answer === "yes") {
+    msg.innerHTML  = "！！正解！！<br>このチャットは詐欺です！！";
+} else if (answer === "no") {
+    msg.innerHTML  = "！！不正解！！<br>このチャットは詐欺です！！";
+}

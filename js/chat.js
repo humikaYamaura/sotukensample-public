@@ -1,4 +1,8 @@
 
+//APIキーの取得
+const API_KEY = "1";
+
+
 
 //入力欄の設定
 const textarea = document.getElementById('textarea');
@@ -16,6 +20,46 @@ textarea.addEventListener('input', function() {
         this.style.height = Math.max(this.scrollHeight, minHeight) + 'px'; 
     }
 });
+
+//読み上げ機能
+const voice_select = document.getElementById("voice-select");
+const speed_select = document.getElementById("speed-select");
+//音声リストに音声を追加(利用するブラウザによって取得できる音声は異なる)
+const appendVoices = function(){
+    //日本語のみ追加
+    const voice = speechSynthesis.getVoices().filter((v) => v.lang === 'ja-JP');
+    //選択肢を初期化
+    voice_select.innerHTML = "";
+    const none_option = document.createElement("option");
+    none_option.value = "なし";
+    none_option.innerText = "なし";
+    voice_select.appendChild(none_option);
+
+    voice.forEach((v) => {
+        const option = document.createElement("option");
+        option.value = v.name;
+        option.innerText = v.name;
+        voice_select.appendChild(option);
+    });
+}
+appendVoices();
+
+speechSynthesis.onvoiceschanged = e => {
+    appendVoices();
+}
+
+const speak = function(text){
+    const uttr = new SpeechSynthesisUtterance(text);
+    if(voice_select.value == "なし"){
+        return;
+    }
+    console.log(text);
+    uttr.voice = speechSynthesis.getVoices().filter((v) => v.name === voice_select.value)[0];
+    uttr.lang = 'ja-JP';
+    uttr.rate = speed_select.value;
+    uttr.pitch = 1.0;
+    window.speechSynthesis.speak(uttr);
+}
 
 window.addEventListener('DOMContentLoaded', function() {
     const chatBox = document.getElementById('scroll');
@@ -77,7 +121,7 @@ mike_button.addEventListener('click', function() {
 });
 
 
-document.getElementById('displayButton').addEventListener('click', function() {
+document.getElementById('displayButton').addEventListener('click', async function() {
     const inputTextarea = document.getElementById('textarea');
     const chatBox = document.getElementById('scroll');
 
@@ -97,12 +141,24 @@ document.getElementById('displayButton').addEventListener('click', function() {
     inputTextarea.value = "";
     inputTextarea.style.height = "";
 
-    // 少し遅れてAI返信
-    setTimeout(() => {
+    const prompt = formattedText;
+    try{
+        const response = await fetch("http://localhost:3001/generate",{
+            method: 'POST',
+            headers:{
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({prompt:prompt})
+        });
+        if(!response.ok){
+            throw new Error(response.status);
+        }
+        const data = await response.json();
+
         const aiComment = document.createElement('div');
         aiComment.classList.add('aicomment');
         const aiP = document.createElement('p');
-        aiP.textContent = "テスト";
+        aiP.textContent = data.result;
         aiComment.appendChild(aiP);
         chatBox.appendChild(aiComment);
 
@@ -116,55 +172,19 @@ document.getElementById('displayButton').addEventListener('click', function() {
             aiComment.classList.add('quiz-aicomment');
         }
 
+        speak(data.result);
 
-        speak("テスト");
         // 一番下までスクロール
         chatBox.scrollTop = chatBox.scrollHeight;
-    }, 500);
+
+    }catch(error){
+        alert("エラーが発生しました" + error.message);
+        console.error(error);
+    }
 });
 
-//読み上げ機能
-const voice_select = document.getElementById("voice-select");
-const speed_select = document.getElementById("speed-select");
-//音声リストに音声を追加(利用するブラウザによって取得できる音声は異なる)
-const appendVoices = function(){
-    //日本語のみ追加
-    const voice = speechSynthesis.getVoices().filter((v) => v.lang === 'ja-JP');
-    //選択肢を初期化
-    voice_select.innerHTML = "";
-    const none_option = document.createElement("option");
-    none_option.value = "なし";
-    none_option.innerText = "なし";
-    voice_select.appendChild(none_option);
-
-    voice.forEach((v) => {
-        const option = document.createElement("option");
-        option.value = v.name;
-        option.innerText = v.name;
-        voice_select.appendChild(option);
-    });
-}
-appendVoices();
-
-speechSynthesis.onvoiceschanged = e => {
-    appendVoices();
-}
-
-const speak = function(text){
-    const uttr = new SpeechSynthesisUtterance(text);
-    if(voice_select.value == "なし"){
-        return;
-    }
-    console.log(text);
-    uttr.voice = speechSynthesis.getVoices().filter((v) => v.name === voice_select.value)[0];
-    uttr.lang = 'ja-JP';
-    uttr.rate = speed_select.value;
-    uttr.pitch = 1.0;
-    window.speechSynthesis.speak(uttr);
-}
-
-
-document.getElementById("quiz-form").addEventListener("submit", function(event) {
+if(sessionStorage.getItem("mode") == "詐欺体験クイズ"){
+    document.getElementById("quiz-form").addEventListener("submit", function(event) {
     event.preventDefault(); // 通常の送信を止める
 
     // 選択されたラジオボタンの値を取得
@@ -173,3 +193,4 @@ document.getElementById("quiz-form").addEventListener("submit", function(event) 
     // 結果ページに値をURLで渡して遷移
     window.location.href = `quiz-review.html?answer=${answer}`;
 });
+}

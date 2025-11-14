@@ -31,7 +31,41 @@ window.addEventListener('DOMContentLoaded', function() {
     speak("こんにちは！");
 });
 
+//マイクボタン
+const mike_button = document.getElementById('mikeButton');
+SpeechRecongnition = webkitSpeechRecognition || SpeechRecognition;
+const recognition = new SpeechRecognition();
+recognition.lang = 'ja-JP';
+recognition.interimResults = true;
+recognition.continuous = true;
 
+let isMike = false;
+mike_button.addEventListener('click', function() {
+    if(!isMike){
+        recognition.onresult = (e) => {
+            for(let i = e.resutlIndex; i < e.results.length; i++){
+                let transcript = e.results[i][0].transcript;
+                textarea.value += transcript;
+                console.log(transcript);
+            }
+        };
+        //マイクが許可されなかった場合など
+        recognition.onerror = (e) => {
+            console.log(e.error);
+            isMike = false;
+            mike_button.classList.remove("mikeON");
+            recognition.stop();
+            alert("マイクが利用できません。" + "\n" + "エラー：" + e.error);
+        }
+        isMike = true;
+        mike_button.classList.add("mikeON");
+        recognition.start();
+    }else{
+        isMike = false;
+        mike_button.classList.remove("mikeON");
+        recognition.stop();
+    }
+});
 
 document.getElementById('displayButton').addEventListener('click', function() {
     const inputTextarea = document.getElementById('textarea');
@@ -71,10 +105,17 @@ document.getElementById('displayButton').addEventListener('click', function() {
 //読み上げ機能
 const voice_select = document.getElementById("voice-select");
 const speed_select = document.getElementById("speed-select");
-//音声リストに音声を追加
+//音声リストに音声を追加(利用するブラウザによって取得できる音声は異なる)
 const appendVoices = function(){
     //日本語のみ追加
     const voice = speechSynthesis.getVoices().filter((v) => v.lang === 'ja-JP');
+    //選択肢を初期化
+    voice_select.innerHTML = "";
+    const none_option = document.createElement("option");
+    none_option.value = "なし";
+    none_option.innerText = "なし";
+    voice_select.appendChild(none_option);
+
     voice.forEach((v) => {
         const option = document.createElement("option");
         option.value = v.name;

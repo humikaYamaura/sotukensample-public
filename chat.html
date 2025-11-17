@@ -10,7 +10,7 @@
     <div id="button-area">
         <input type="button" id="exit-button" value="TOP↩" onclick="location.href='index.html'">
     </div>
-    <h1>オレオレ詐欺</h1>
+    <h1 id = type-caption>オレオレ詐欺</h1>
 
 
     <div id ="chat">
@@ -21,7 +21,7 @@
     <div id ="voice-area">
         ♪音声：
         <select id="voice-select">
-            <option>なし</option>
+            <option value="なし">なし</option>
         </select>
         　≫速度：
         <select id="speed-select">
@@ -33,6 +33,7 @@
     </div>
     <div id ="field">
         <form action="#" id="form">
+            <button type="button" id="mikeButton">🎙️</button>
             <textarea id="textarea" placeholder="入力欄" style="height: 30px;" ></textarea>
             <button type="button" id="displayButton"></button>
         </form>

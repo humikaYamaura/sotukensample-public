@@ -1,6 +1,11 @@
 //セッションID
 let sessionId = "";
 
+//詐欺種類
+const type = sessionStorage.getItem("type");
+
+document.getElementById("type-caption").innerHTML = type;
+
 //入力欄の設定
 const textarea = document.getElementById('textarea');
 

@@ -177,11 +177,13 @@ document.getElementById('displayButton').addEventListener('click', async functio
             throw new Error("サーバーエラー" + response.status);
         }
         const data = await response.json();
+        const aiText = data.result.replaceAll("*","").replaceAll("\n","<br>").replaceAll("#","");
+        console.log(aiText);
 
         const aiComment = document.createElement('div');
         aiComment.classList.add('aicomment');
         const aiP = document.createElement('p');
-        aiP.textContent = data.result;
+        aiP.innerHTML = aiText;
         aiComment.appendChild(aiP);
         chatBox.appendChild(aiComment);
 
@@ -200,9 +202,13 @@ document.getElementById('displayButton').addEventListener('click', async functio
         // 一番下までスクロール
         chatBox.scrollTop = chatBox.scrollHeight;
 
+
     }catch(error){
         alert("エラーが発生しました" + error.message);
         console.error(error);
+        //入力した文字を入力欄に戻す
+        inputTextarea.value = userP.innerText;
+        chatBox.removeChild(myComment);
     }
     //入力欄の有効化
     inputTextarea.disabled = false;

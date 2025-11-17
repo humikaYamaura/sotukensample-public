@@ -304,6 +304,8 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     resize: none; 
     overflow: hidden;
     min-height: 30px;
+    field-sizing: content;
+    min-height: min-content;
 }
 
 #mikeButton{
@@ -311,6 +313,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     background-color: #f0f3ff;
     border: solid 1px gray;
     font-size: 23px;
+    height: 35px;
     cursor: pointer; 
     transition: all 0.1s ease;
 }

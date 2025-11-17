@@ -1,25 +1,8 @@
-
-//APIキーの取得
-const API_KEY = "1";
-
-
+//セッションID
+let sessionId = "";
 
 //入力欄の設定
 const textarea = document.getElementById('textarea');
-const minHeight = 30;
-
-textarea.addEventListener('input', function() {
-    this.style.height = 'auto'; // 高さリセット
-    const lines = this.value.split('\n').length; // 現在の行数
-
-    if (lines === 1) {
-        // 1行目のときは最小高さ
-        this.style.height = minHeight + 'px';
-    } else {
-        // 2行目以降は内容に合わせて高さを調整
-        this.style.height = Math.max(this.scrollHeight, minHeight) + 'px'; 
-    }
-});
 
 //読み上げ機能
 const voice_select = document.getElementById("voice-select");
@@ -61,7 +44,7 @@ const speak = function(text){
     window.speechSynthesis.speak(uttr);
 }
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', async function() {
     const chatBox = document.getElementById('scroll');
 
     // 最初からAIの吹き出しを表示
@@ -80,8 +63,25 @@ window.addEventListener('DOMContentLoaded', function() {
     } else if (pageName === 'quiz-chat.html') {
         firstAiComment.classList.add('quiz-aicomment');
     }
-
     speak("こんにちは！");
+
+    //チャットセッション開始
+    //ただし、node.js側が再起動されるまでチャットが削除されないため
+    //データがひっ迫したりF5連打に弱かったりする
+    try{
+        const response = await fetch("http://localhost:3001/start");
+        if(!response.ok){
+            throw new Error("セッション開始に失敗しました");
+        }
+        const data = await response.json();
+        sessionId = data.sessionId;
+        
+        //この辺で状況設定や詐欺種別などのプロンプトを送信する
+
+    }catch(error){
+        console.error("エラー：", error);
+        this.alert('セッション開始エラー' + error.message);
+    }
 });
 
 //マイクボタン
@@ -95,11 +95,21 @@ recognition.continuous = true;
 let isMike = false;
 mike_button.addEventListener('click', function() {
     if(!isMike){
+        //認識結果(確定)
+        let finalTranscript = "";
         recognition.onresult = (e) => {
-            for(let i = e.resutlIndex; i < e.results.length; i++){
+            //認識結果(途中)
+            let interimTranscript = "";
+            for(let i = e.resultIndex; i < e.results.length; i++){
                 let transcript = e.results[i][0].transcript;
-                textarea.value += transcript;
-                console.log(transcript);
+                if(e.results[i].isFinal){
+                    finalTranscript += transcript
+                    console.log(transcript);
+                }else{
+                    interimTranscript = transcript
+                }
+                console.log(e);
+                textarea.value = finalTranscript + interimTranscript;
             }
         };
         //マイクが許可されなかった場合など
@@ -138,20 +148,28 @@ document.getElementById('displayButton').addEventListener('click', async functio
     myComment.appendChild(userP);
     chatBox.appendChild(myComment);
 
+    //入力欄の無効化
+    inputTextarea.disabled = true;
+    inputTextarea.placeholder = "回答生成中・・・";
+
     inputTextarea.value = "";
     inputTextarea.style.height = "";
 
     const prompt = formattedText;
     try{
-        const response = await fetch("http://localhost:3001/generate",{
+        //入力したテキストを送信
+        const response = await fetch("http://localhost:3001/send",{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
             },
-            body: JSON.stringify({prompt:prompt})
+            body: JSON.stringify({
+                sessionId: sessionId,
+                prompt:prompt
+            })
         });
         if(!response.ok){
-            throw new Error(response.status);
+            throw new Error("サーバーエラー" + response.status);
         }
         const data = await response.json();
 
@@ -181,6 +199,9 @@ document.getElementById('displayButton').addEventListener('click', async functio
         alert("エラーが発生しました" + error.message);
         console.error(error);
     }
+    //入力欄の有効化
+    inputTextarea.disabled = false;
+    inputTextarea.placeholder = "入力欄";
 });
 
 if(sessionStorage.getItem("mode") == "詐欺体験クイズ"){

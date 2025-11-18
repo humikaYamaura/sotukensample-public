@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const {GoogleGenAI} = require("@Google/genai");
+const {GoogleGenAI} = require("@google/genai");
 const cors = require("cors");
 const { message } = require("statuses");
 
@@ -60,5 +60,5 @@ app.post("/send", async (req,res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Backend server listening at http://loalhost:${port}`);
+    console.log(`Backend server listening at http://localhost:${port}`);
 });

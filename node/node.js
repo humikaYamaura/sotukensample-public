@@ -9,6 +9,8 @@ const port = 3001
 
 const ai = new GoogleGenAI({});
 
+//セッションの有効期限(30分)
+const session_timeout = 30 * 60 * 1000;
 const chatSessions = {};
 
 app.use(express.json());
@@ -25,7 +27,11 @@ async function initialize() {
             model: "gemini-2.5-flash"
         });
         //セッションID・チャットの紐付け
-        chatSessions[sessionId] = chat;
+        chatSessions[sessionId] = {
+            chat: chat,
+            timerId: null
+        };
+        resetSession(sessionId);
         console.log("チャットセッション開始:" + sessionId);
 
         res.json({sessionId: sessionId});
@@ -33,19 +39,53 @@ async function initialize() {
 }
 initialize();
 
+//セッションをメモリから削除する
+const cleanUpSession = function(sessionId){
+    const sessionData = chatSessions[sessionId];
+    console.log(sessionData);
+    if(sessionData){
+        clearTimeout(sessionData.timerId);
+        delete chatSessions[sessionId];
+        console.log("セッション削除:" + sessionId);
+    }
+}
+
+//セッションの有効期限を初期化する
+const resetSession = function(sessionId){
+    const sessionData = chatSessions[sessionId];
+    if(!sessionData){
+        return;
+    }
+    console.log("セッション有効期限初期化:" + sessionId);
+    //既存のタイマー削除
+    if(sessionData.timerId){
+        clearTimeout(sessionData.timerId);
+    }
+    //有効期限経過後にセッション削除
+    const newTimerId = setTimeout(() => {
+        cleanUpSession(sessionId);
+    },session_timeout);
+
+    sessionData.timerId = newTimerId;
+}
+
 //プロンプトを受け付けるメソッド
 app.post("/send", async (req,res) => {
     const {sessionId, prompt} = req.body;
 
     if(!sessionId || !prompt){
-        return res.status(400).json({error:"チャットが作成されていないか、入力されたテキストがありません"});
+        return res.status(400).json({error:"セッションが見つかりません。"});
     }
-    //セッションIDからチャット取得
-    const chat = chatSessions[sessionId];
 
-    if(!chat){
-        return res.status(404).json({error:"セッションが見つかりません"});
+    //セッションIDからチャット取得
+    const sessionData = chatSessions[sessionId];
+    if(!sessionData){
+        return res.status(400).json({error: "セッションの有効期限切れです。"})
     }
+    const chat = sessionData.chat;
+
+    //セッション延長
+    resetSession(sessionId);
 
     try{
         //メッセージ送信
@@ -57,6 +97,15 @@ app.post("/send", async (req,res) => {
         console.log("生成エラー：", error.message);
         res.status(500).json({error: "生成中にエラーが発生しました"})
     }
+});
+
+//セッション削除を受け付けるメソッド
+app.post("/delete", async(req,res) => {
+    const sessionId = req.body.sessionId;
+    if(sessionId){
+        cleanUpSession(sessionId);
+    }
+    res.status(200).send({});
 });
 
 app.listen(port, () => {

@@ -5,15 +5,6 @@ let sessionId = "";
 const type = sessionStorage.getItem("type");
 document.getElementById("type-caption").innerHTML = type;
 
-//プロンプト(ドキュメントに書いてあるのをコピペするとかなり長くなる、DBから取得するようにした方が良いかもしれない)
-const type_prompt = new Map([
-    ["オレオレ詐欺(親族)","こんにちは。"],
-    ["オレオレ詐欺(警察)","こんばんは。"],
-    ["還付金詐欺","おはようございます。"],
-    ["架空料金請求詐欺","ぐっどもーにんぐ。"],
-    ["融資保証金詐欺","あなたは誰ですか？"]
-]);
-
 //入力欄の設定
 const textarea = document.getElementById('textarea');
 const inputTextarea = document.getElementById('textarea');
@@ -87,6 +78,25 @@ const speak = function(text){
 }
 
 window.addEventListener('DOMContentLoaded', async function() {
+    //プロンプトをJSONファイルから取得
+    let prompts = {};
+    let type_prompt;
+    fetch('js/prompt.json')
+        .then(response => response.json())
+        .then(data => {
+            prompts = data.prompts;
+            console.log(prompts);
+
+            //mapに変換
+            const entries = Object.entries(prompts);
+            type_prompt = new Map(entries);
+            console.log(type_prompt); 
+        })
+        .catch(error => {
+            alert("プロンプトの読み込みに失敗しました。：" + error);
+            location.href = "index.html";
+        })
+
     const chatBox = document.getElementById('scroll');
     const firstAiComment = document.createElement('div');
     const aiP = document.createElement('p');
@@ -138,7 +148,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             },
             body: JSON.stringify({
                 sessionId: sessionId,
-                prompt:prompt
+                prompt: type_prompt.get("出力ルール") + prompt
             })
         });
         if(!response2.ok){
@@ -148,7 +158,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         const data2 = await response2.json();
         const aiText = data2.result.replaceAll("*","").replaceAll("\n","<br>").replaceAll("#","");
         console.log(aiText);
-        speak(aiText);
+        speak(aiText.replaceAll("<br>",""));
         // AIの吹き出し
         aiP.innerHTML = aiText;
         firstAiComment.appendChild(aiP);
@@ -273,11 +283,10 @@ document.getElementById('displayButton').addEventListener('click', async functio
             aiComment.classList.add('quiz-aicomment');
         }
 
-        speak(aiText);
+        speak(aiText.replaceAll("<br>","\n"));
 
         // 一番下までスクロール
         chatBox.scrollTop = chatBox.scrollHeight;
-
 
     }catch(error){
         alert(error);
@@ -311,7 +320,6 @@ document.getElementById("fin-button").addEventListener("click",()=> {
     }else {
         url = "trial-review.html";
     }
-    session_del();
 
     window.location.href = url;
 });

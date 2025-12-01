@@ -24,7 +24,7 @@ async function initialize() {
         const sessionId = uuidv4();
 
         const chat = ai.chats.create({
-            model: "gemini-2.5-pro"
+            model: "gemini-2.5-flash"
         });
         //セッションID・チャットの紐付け
         chatSessions[sessionId] = {

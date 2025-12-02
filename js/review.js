@@ -14,11 +14,22 @@ const review = document.getElementById("review");
 }
 */
 
-//一時的に「オレオレ詐欺」を設定 
+//詐欺種別
 const type = sessionStorage.getItem("type");
 type_title.innerText = type + "とは";
 
-//説明文と返答評価
+//textは表示させる文章、innerHTMLは表示を行う要素、intervalは文字の表示間隔
+const typeText = function(text,innerHTML,interval){
+    let index = 0;
+    const type = function(){
+        innerHTML.innerHTML = text.slice(0,index);
+        if(index < text.length){
+            index++;
+            setTimeout(type,interval);
+        }
+    }
+    setTimeout(type, interval);
+};
 
 //説明文をJSONファイルから取得
 let explanation_json = {};
@@ -35,7 +46,6 @@ fetch('js/prompt.json')
     })
     .catch(error => {
         alert("説明文の読み込みに失敗しました。：" + error);
-        location.href = "index.html";
     })
 //返答評価
 const review_history = async() => {
@@ -58,6 +68,7 @@ const review_history = async() => {
         const data = await response.json();
         const review_text = data.result.replaceAll("*","").replaceAll("\n","<br>").replaceAll("#","");
         console.log(review_text);
+        sessionStorage.setItem(localStorage.getItem("sessionID") + "_review",review_text);
 
         typeText(review_text,review,50);
 
@@ -65,21 +76,12 @@ const review_history = async() => {
         alert("返答評価生成に失敗しました。:" + error);
     }
 };
-review_history();
-
-
-//textは表示させる文章、innerHTMLは表示を行う要素、intervalは文字の表示間隔
-const typeText = function(text,innerHTML,interval){
-    let index = 0;
-    const type = function(){
-        innerHTML.innerHTML = text.slice(0,index);
-        if(index < text.length){
-            index++;
-            setTimeout(type,interval);
-        }
-    }
-    setTimeout(type, interval);
-};
+//同じセッションチャットのレビューがあればそれを表示(F5連打防止)
+if(sessionStorage.getItem(localStorage.getItem("sessionID") + "_review")){
+    typeText(sessionStorage.getItem(localStorage.getItem("sessionID") + "_review"),review,50);
+}else{
+    review_history();
+}
 
 //正解・不正解判定
 const params = new URLSearchParams(location.search);
@@ -91,3 +93,8 @@ if (answer === "yes") {
 } else if (answer === "no") {
     msg.innerHTML  = "！！不正解！！<br>このチャットは詐欺です！！";
 }
+
+//TOPに戻る
+document.getElementById("exit-button").addEventListener("click", () => {
+    window.location.href = "index.html"; 
+});

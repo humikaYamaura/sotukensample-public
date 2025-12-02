@@ -105,7 +105,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     const noticeComment = document.createElement('div');
     const noticeP = document.createElement('p');
     noticeP.innerHTML = "シミュレーションに登場する人物・団体・会社はすべて架空のものであり、<br>実在の人物・団体・会社とは一切関係ありません。<br><br>"
-                        + "また、シミュレーション内で個人情報の入力を行わないようにしてください。";
+                        + "また、シミュレーション内で個人情報の入力を行わないようにしてください。<br>個人情報の要求があった場合、「○○県○○市～」や「123-4567」などの架空の情報を入力してください。";
 
     // 現在のHTMLファイル名を取得
     const pageName = window.location.pathname.split('/').pop();

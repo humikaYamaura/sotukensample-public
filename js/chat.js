@@ -1,5 +1,42 @@
+// ① Supabase をブラウザで使う正しい方法（CDN 版）
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// ② 自分の Supabase 情報を入れる
+const supabaseUrl = "https://nonjuyhzowdhcmrnocww.supabase.co";          // ★あなたのURL
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vbmp1eWh6b3dkaGNtcm5vY3d3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1MzkwMTgsImV4cCI6MjA4MDExNTAxOH0.u6HRa_feby48aZg4zjZWUUWCizXEgyRj1b3OliOwglM";    // ★あなたのAnonキー
+
+// ③ Supabase クライアント作成
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+
+// Supabaseで登録したテーブル名
+const TABLE_NAME = 'prompts';
+
 //セッションID
 let sessionId = "";
+
+const type_prompt = new Map();
+
+export const getList = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("prompts")
+      .select("type, content");
+
+    if (error) throw new Error(error.message);
+
+    console.log("Supabase 取得データ:", data);
+
+    // Map に変換して返すだけ
+    return new Map(data.map(row => [row.type, row.content]));
+
+  } catch (error) {
+    alert("プロンプトの読み込みに失敗しました：" + error);
+    location.href = "index.html";
+  }
+};
+
+
 
 //詐欺種類
 const type = sessionStorage.getItem("type");
@@ -82,20 +119,24 @@ window.addEventListener('DOMContentLoaded', async function() {
     let prompts = {};
     let type_prompt;
     fetch('js/prompt.json')
-        .then(response => response.json())
-        .then(data => {
-            prompts = data.prompts;
-            console.log(prompts);
+        //.then(response => response.json())
+        //.then(data => {
+        //    prompts = data.prompts;
+        //    console.log(prompts);
 
             //mapに変換
-            const entries = Object.entries(prompts);
-            type_prompt = new Map(entries);
-            console.log(type_prompt); 
-        })
-        .catch(error => {
-            alert("プロンプトの読み込みに失敗しました。：" + error);
-            location.href = "index.html";
-        })
+        //    const entries = Object.entries(prompts);
+        //    type_prompt = new Map(entries);
+        //    console.log(type_prompt); 
+        //})
+        //.catch(error => {
+        //    alert("プロンプトの読み込みに失敗しました。：" + error);
+        //    location.href = "index.html";
+        //})
+
+        // Supabase からデータを取得
+        const prompts_map = await getList();   
+        type_prompt = prompts_map;           
 
     const chatBox = document.getElementById('scroll');
     const firstAiComment = document.createElement('div');
@@ -178,7 +219,7 @@ window.addEventListener('DOMContentLoaded', async function() {
 
 //マイクボタン
 const mike_button = document.getElementById('mikeButton');
-SpeechRecongnition = webkitSpeechRecognition || SpeechRecognition;
+SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.lang = 'ja-JP';
 recognition.interimResults = true;

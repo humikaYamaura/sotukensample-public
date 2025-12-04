@@ -294,6 +294,30 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     padding: 5px;
 }
 
+#voice-area #adviceButton{
+    border-radius: 50px;
+    background-color: #f0f3ff;
+    border: solid 1px gray;
+    font-size: 16px;
+    height: 35px;
+    width: 130px;
+    vertical-align: center;
+    cursor: pointer; 
+    transition: all 0.1s ease;
+}
+#voice-area #adviceButton span{
+    font-size: 20px;
+    vertical-align: center;
+}
+
+#voice-area #adviceButton:hover{
+    background-color: silver;
+}
+#voice-area #adviceButton:disabled{
+    cursor:default;
+    background-color: silver;
+}
+
 #textarea {
     border: none;
     outline: none;

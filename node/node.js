@@ -13,11 +13,23 @@ const ai = new GoogleGenAI({});
 const session_timeout = 30 * 60 * 1000;
 const chatSessions = {};
 
+const rateLimit = require("express-rate-limit");
+
 app.use(express.json());
 app.use(cors({origin: ["http://localhost:5500","http://127.0.0.1:5500"]}));
 
 async function initialize() {
     const {v4: uuidv4} = await import("uuid");
+
+    //F5連打対策。同一IPからのチャット開始は1分間に15回まで
+    const apiLimiter = rateLimit({
+        windowMs: 1 * 60 * 1000,
+        max: 15,
+        standardHeaders:true,
+        message: "Too many requests.Please try again later.",
+    })
+    app.use("/start", apiLimiter);
+    app.set('trust proxy', 1);
 
     //チャットを開始するメソッド(チャット履歴の保存に必要)
     app.get('/start', (req, res) => {

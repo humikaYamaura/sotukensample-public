@@ -115,32 +115,15 @@ const speak = function(text){
 }
 
 window.addEventListener('DOMContentLoaded', async function() {
-    //プロンプトをJSONファイルから取得
-    let prompts = {};
-    let type_prompt;
-    fetch('js/prompt.json')
-        //.then(response => response.json())
-        //.then(data => {
-        //    prompts = data.prompts;
-        //    console.log(prompts);
-
-            //mapに変換
-        //    const entries = Object.entries(prompts);
-        //    type_prompt = new Map(entries);
-        //    console.log(type_prompt); 
-        //})
-        //.catch(error => {
-        //    alert("プロンプトの読み込みに失敗しました。：" + error);
-        //    location.href = "index.html";
-        //})
-
-        // Supabase からデータを取得
-        const prompts_map = await getList();   
-        type_prompt = prompts_map;           
-
     const chatBox = document.getElementById('scroll');
     const firstAiComment = document.createElement('div');
     const aiP = document.createElement('p');
+
+    //入力欄の無効化
+    inputTextarea.disabled = true;
+    inputTextarea.placeholder = "回答生成中・・・";
+    mike_button.disabled = true;
+    advice_button.disabled = true;
 
     //注意事項
     const noticeComment = document.createElement('div');
@@ -163,6 +146,33 @@ window.addEventListener('DOMContentLoaded', async function() {
     noticeComment.appendChild(noticeP);
     chatBox.appendChild(noticeComment);
 
+
+    //プロンプトをJSONファイルから取得
+    let prompts = {};
+    let type_prompt;
+    /*
+    fetch('js/prompt.json')
+        .then(response => response.json())
+        .then(data => {
+            prompts = data.prompts;
+            console.log(prompts);
+
+          //mapに変換
+            const entries = Object.entries(prompts);
+            type_prompt = new Map(entries);
+            console.log(type_prompt); 
+        })
+        .catch(error => {
+            alert("プロンプトの読み込みに失敗しました。：" + error);
+            location.href = "index.html";
+        })
+    */
+
+        //Supabase からデータを取得
+        const prompts_map = await getList();   
+        type_prompt = prompts_map; 
+        
+
     //チャットセッション開始
     try{
         const response = await fetch("http://localhost:3001/start");
@@ -176,12 +186,6 @@ window.addEventListener('DOMContentLoaded', async function() {
         
         //プロンプトを用意する
         const prompt = type_prompt.get(type);
-
-        //入力欄の無効化
-        inputTextarea.disabled = true;
-        inputTextarea.placeholder = "回答生成中・・・";
-        mike_button.disabled = true;
-        advice_button.disabled = true;
 
         //入力したテキストを送信
         const response2 = await fetch("http://localhost:3001/send",{

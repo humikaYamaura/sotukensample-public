@@ -105,7 +105,8 @@ window.addEventListener('DOMContentLoaded', async function() {
     const noticeComment = document.createElement('div');
     const noticeP = document.createElement('p');
     noticeP.innerHTML = "シミュレーションに登場する人物・団体・会社はすべて架空のものであり、<br>実在の人物・団体・会社とは一切関係ありません。<br><br>"
-                        + "また、シミュレーション内で個人情報の入力を行わないようにしてください。<br>個人情報の要求があった場合、「○○県○○市～」や「123-4567」などの架空の情報を入力してください。";
+                        + "また、シミュレーション内で個人情報の入力を行わないようにしてください。<br>個人情報の要求があった場合、「○○県○○市～」や「123-4567」などの架空の情報を入力してください。<br><br>"
+                        + "左下のアドバイスボタンを押すと、これまでの発言や状況に応じたアドバイスをAIから受け取れます。";
 
     // 現在のHTMLファイル名を取得
     const pageName = window.location.pathname.split('/').pop();
@@ -125,7 +126,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     try{
         const response = await fetch("http://localhost:3001/start");
         if(!response.ok){
-            throw new Error("セッション開始に失敗しました");
+            throw new Error(response.statusText);
         }
         const data = await response.json();
         sessionId = data.sessionId;
@@ -139,6 +140,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         inputTextarea.disabled = true;
         inputTextarea.placeholder = "回答生成中・・・";
         mike_button.disabled = true;
+        advice_button.disabled = true;
 
         //入力したテキストを送信
         const response2 = await fetch("http://localhost:3001/send",{
@@ -168,6 +170,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         inputTextarea.disabled = false;
         inputTextarea.placeholder = "入力欄";
         mike_button.disabled = false;
+        advice_button.disabled  =false;
 
     }catch(error){
         console.error("エラー：", error);
@@ -222,11 +225,21 @@ mike_button.addEventListener('click', function() {
     }
 });
 
+//アドバイスボタン
+const advice_button = document.getElementById("adviceButton");
+advice_button.addEventListener("click", async() => {
+    sendText("アドバイスをくれ。");
+})
 
+//送信ボタン
 document.getElementById('displayButton').addEventListener('click', async function() {
     const text = inputTextarea.value.trim();
     if (text === "") return;
+    sendText(text);
+});
 
+//テキスト送信
+const sendText = async function(text){
     const formattedText = text.replace(/\n/g, '<br>');
 
     // ユーザー吹き出し（右側）
@@ -241,6 +254,7 @@ document.getElementById('displayButton').addEventListener('click', async functio
     inputTextarea.disabled = true;
     inputTextarea.placeholder = "回答生成中・・・";
     mike_button.disabled = true;
+    advice_button.disabled = true;
 
     inputTextarea.value = "";
     inputTextarea.style.height = "";
@@ -299,7 +313,8 @@ document.getElementById('displayButton').addEventListener('click', async functio
     inputTextarea.disabled = false;
     inputTextarea.placeholder = "入力欄";
     mike_button.disabled = false;
-});
+    advice_button.disabled = false;
+}
 
 //TOPボタンが押された時
 document.getElementById("exit-button").addEventListener("click",()=> {

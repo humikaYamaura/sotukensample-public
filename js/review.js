@@ -1,3 +1,4 @@
+/*
 //  Supabase をブラウザで使う正しい方法（CDN 版）
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -11,6 +12,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Supabaseで登録したテーブル名
 const TABLE_NAME = 'explanation';
+*/
 
 const type_title = document.getElementById("type-title");
 const explanation = document.getElementById("explanation");
@@ -32,6 +34,7 @@ const review = document.getElementById("review");
 const type = sessionStorage.getItem("type");
 type_title.innerText = type + "とは";
 
+/*
 //説明文をsupabaseから取得
 export const getList = async () => {
   try {
@@ -51,7 +54,7 @@ export const getList = async () => {
     location.href = "chat.html";
   }
 };
-
+*/
 
 
 //textは表示させる文章、innerHTMLは表示を行う要素、intervalは文字の表示間隔
@@ -67,12 +70,11 @@ const typeText = function(text,innerHTML,interval){
     setTimeout(type, interval);
 };
 
-
+/*
 //説明文をJSONファイルから取得
 let explanation_json = {};
 let type_prompt;
 
-/*
 fetch('js/prompt.json')
     .then(response => response.json())
     .then(data => {
@@ -87,18 +89,28 @@ fetch('js/prompt.json')
     .catch(error => {
         alert("説明文の読み込みに失敗しました。：" + error);
     })
-        */
+        
 
     //Supabase からデータを取得
     const prompts_map = await getList();   
     type_prompt = prompts_map; 
+    */
 
-    //説明文の表示
-    if (type_prompt.has(type)) {
-        typeText(type_prompt.get(type), explanation, 50);
-    } else {
-        explanation.innerHTML = "説明文が見つかりません。";
-    }
+//sessionStorageに格納された説明文を取得
+const saveType = sessionStorage.getItem("saveType");
+if(!saveType){
+    alert("トップページからやり直してください。");
+    location.href = "index.html";
+}
+const typeArray = JSON.parse(saveType);
+const type_prompt = new Map(typeArray.map(item => [item.type, item.content]));
+
+//説明文の表示
+if (type_prompt.has(type)) {
+    typeText(type_prompt.get(type), explanation, 50);
+} else {
+    explanation.innerHTML = "説明文が見つかりません。";
+}
 
 //返答評価
 const review_history = async() => {
@@ -115,10 +127,10 @@ const review_history = async() => {
                 "【返答評価の基準】\n「あなたの返答」の評価は行わないでください。返答評価は「1.接触」「2.金銭の要求」「3.受け渡し」の3段階の手順に分けてそれぞれ200～300文字以内で行ってください。最後に「4.総評」でまとめてください。この際、全ての返答を評価する必要はなく、「手順における重要なポイント」となる返答のみを例に挙げてください。なお、「返答評価を行います。」などの前置きは不要です。返答評価の基準は、「私(ユーザー)が詐欺の可能性がある電話に対して適切な返答が行えたか」であり、「返答評価を行ってください。」という文章およびそれ以降の基準は含みません。この返答評価を行う際、「私」は「あなた」に置き換えてください。"
         })
     });
-    if(!response.ok){
-        const errorString = await response.json();
-        throw new Error(errorString.error || "サーバーエラー：" + response.status);
-    }
+        if(!response.ok){
+            const errorString = await response.json();
+            throw new Error(errorString.error || "サーバーエラー：" + response.status);
+        }
         const data = await response.json();
         const review_text = data.result.replaceAll("*","").replaceAll("\n","<br>").replaceAll("#","");
         console.log(review_text);
@@ -134,6 +146,7 @@ const review_history = async() => {
 if(sessionStorage.getItem(localStorage.getItem("sessionID") + "_review")){
     typeText(sessionStorage.getItem(localStorage.getItem("sessionID") + "_review"),review,50);
 }else{
+    sessionStorage.setItem(localStorage.getItem("sessionID") + "_review"," ");
     review_history();
 }
 

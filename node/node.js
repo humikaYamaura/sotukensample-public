@@ -16,6 +16,7 @@ const chatSessions = {};
 const rateLimit = require("express-rate-limit");
 
 app.use(express.json());
+//AWSにデプロイしたら、この設定を変えること
 app.use(cors({origin: ["http://localhost:5500","http://127.0.0.1:5500"]}));
 
 async function initialize() {
@@ -44,7 +45,7 @@ async function initialize() {
             timerId: null
         };
         resetSession(sessionId);
-        console.log("チャットセッション開始:" + sessionId);
+        console.log(req.ip +"チャットセッション開始:" + sessionId);
 
         res.json({sessionId: sessionId});
     })
@@ -54,7 +55,6 @@ initialize();
 //セッションをメモリから削除する
 const cleanUpSession = function(sessionId){
     const sessionData = chatSessions[sessionId];
-    console.log(sessionData);
     if(sessionData){
         clearTimeout(sessionData.timerId);
         delete chatSessions[sessionId];

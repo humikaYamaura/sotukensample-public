@@ -1,3 +1,13 @@
+// ① Supabase をブラウザで使う正しい方法（CDN 版）
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// ② 自分の Supabase 情報を入れる
+const supabaseUrl = "https://nonjuyhzowdhcmrnocww.supabase.co";          // ★あなたのURL
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vbmp1eWh6b3dkaGNtcm5vY3d3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1MzkwMTgsImV4cCI6MjA4MDExNTAxOH0.u6HRa_feby48aZg4zjZWUUWCizXEgyRj1b3OliOwglM";    // ★あなたのAnonキー
+
+// ③ Supabase クライアント作成
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 //モード識別用変数
 let mode = "詐欺体験";
 
@@ -28,24 +38,83 @@ quiz_button.addEventListener("click", () => {
     submit_button.style.border = "3px solid rgba(40, 176, 155, 1)";
 });
 
-//選択した詐欺種類の取得
-const types = document.getElementsByName("types");
-const expain_text = new Map([["オレオレ詐欺(親族)","親族を装って金銭などをだまし取る詐欺。"],
-                            ["オレオレ詐欺(警察)","警察官を装って金銭などをだまし取る詐欺。"],
-                            ["還付金詐欺","税金の還付金があるなどと嘘を言い、金銭などをだまし取る詐欺。"],
-                            ["架空料金請求詐欺","架空の料金を請求し、金銭などをだまし取る詐欺。"],
-                            ["融資保証金詐欺","融資を保証するための名目で金銭などをだまし取る詐欺。"]
-                            ]);
+//sessionStorageに詐欺タイプやコンテンツ、プロンプトを保存する
+//データが必要になる度にSupabaseに接続して取得するよりも、最初に一括で取得した方が多分速い
+//ただし、Supabase側でデータを更新した場合、タブを開きなおさないと最新のデータが取得できない
+export const getColmun = async (table, colmun) => {
+  try {
+    const { data, error } = await supabase
+      .from(table)
+      .select("type, " + colmun);
+
+    if (error) throw new Error(error.message);
+
+    console.log("Supabase 取得データ:", data);
+
+    return data;
+
+  } catch (error) {
+    alert("プロンプトの読み込みに失敗しました：" + error);
+    location.href = "index.html";
+  }
+};
+
 const explain = document.getElementById("explain");
-types.forEach((type) => {
-    type.addEventListener('change', () => {
-        explain.innerHTML = expain_text.get(type.value);
+const types = document.getElementsByName("types");
+
+//詐欺をラジオボタン形式で格納
+document.addEventListener("DOMContentLoaded", async () => {
+
+    //sessionStorageに保存されていなければSupabaseから取得して保存
+    if(!sessionStorage.getItem("saveType")){
+        const jsonStr = await getColmun("explanation","content");
+        sessionStorage.setItem("saveType", JSON.stringify(jsonStr));
+    }
+    if(!sessionStorage.getItem("savePrompt")){
+        const jsonStr = await getColmun("prompts", "content");
+        sessionStorage.setItem("savePrompt", JSON.stringify(jsonStr));
+    }
+    if(!sessionStorage.getItem("saveExplain")){
+        const jsonStr = await getColmun("explanation","simple_content");
+        sessionStorage.setItem("saveExplain", JSON.stringify(jsonStr));
+    }
+
+    //説明文をsessionStorageから取得
+    //テキスト → Array → Mapの順で変換する
+    const saveExplain = sessionStorage.getItem("saveExplain");
+    const explainArray = JSON.parse(saveExplain);
+    const explainMap = new Map(explainArray.map(item => [item.type, item.simple_content]));
+
+    const type = document.getElementById("type");
+    //ラジオボタン生成
+    explainMap.forEach((elem, name) => {
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "types";
+        input.value = name;
+        input.id = name;
+        const label = document.createElement("label");
+        label.htmlFor = name;
+        label.classList.add("label");
+        label.innerText = name;
+        type.insertBefore(input,explain);
+        type.insertBefore(label,explain);
     });
+
+    //簡易説明表示
+    types.forEach((type) => {
+        type.addEventListener('change', () => {
+            explain.innerHTML = explainMap.get(type.value);
+        });
+    });
+    //初期表示(一番上の詐欺を選択)
+    types[0].checked = true;
+    explain.innerHTML = explainMap.get(types[0].value);
 });
 
 //決定ボタン
 document.getElementById("submit").addEventListener("click", () => {
-    const types = document.getElementsByName("types");
+    //選択した詐欺種類　取得
     let selectType;
     for(let i = 0; i < types.length; i++){
         if(types[i].checked){

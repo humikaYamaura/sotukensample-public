@@ -1,11 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const {GoogleGenAI} = require("@google/genai");
 const cors = require("cors");
 const { message } = require("statuses");
 
 const app = express();
-const port = 3001
+const port = process.env.PORT || 3001
 
 const ai = new GoogleGenAI({});
 
@@ -16,8 +17,10 @@ const chatSessions = {};
 const rateLimit = require("express-rate-limit");
 
 app.use(express.json());
-//AWSにデプロイしたら、この設定を変えること
-app.use(cors({origin: ["http://localhost:5500","http://127.0.0.1:5500"]}));
+// Add static serving of the repo root so the frontend can be served from the backend
+app.use(express.static(path.join(__dirname, '..')));
+// AWSにデプロイしたら、この設定を変えること
+app.use(cors({origin: ["http://localhost:5500","http://127.0.0.1:5500","https://tokushusagi-simulation.onrender.com"]}));
 
 async function initialize() {
     const {v4: uuidv4} = await import("uuid");
@@ -122,4 +125,9 @@ app.post("/delete", async(req,res) => {
 
 app.listen(port, () => {
     console.log(`Backend server listening at http://localhost:${port}`);
+});
+
+// If root (/) is requested, serve the index.html from the project root
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
 });

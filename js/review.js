@@ -139,6 +139,7 @@ const review_history = async() => {
         typeText(review_text,review,50);
 
     }catch(error){
+        sessionStorage.removeItem(localStorage.getItem("sessionID") + "_review")
         alert("返答評価生成に失敗しました。:" + error);
     }
 };

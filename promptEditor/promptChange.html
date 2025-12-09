@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>プロンプト編集</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
+</head>
+<body>
+    <div id="button-area">
+        <input type="button" id="exit-button" value="戻る↩" onclick= "window.close();">
+    </div>
+    <h1>編集</h1>
+    <div id="type">
+        <h3>名称(15文字以内)</h3>
+        <input type="text" id="type-name" placeholder="詐欺の名称を入力してください。" maxlength="15">
+        <h3>説明(簡易)</h3>
+        <input type="text" id="type-simple-explain" placeholder="詐欺の説明を10～20文字程度で入力してください。" maxlength="30">
+        <h3>説明</h3>
+        <textarea id="type-explain" placeholder="シミュレーション終了後に表示する詐欺の説明を250～300文字程度で入力してください。" maxlength="400"></textarea>
+        <h3>プロンプト</h3>
+        <p>プロンプトとは？<br>詐欺師AIに送信する文章です。</p>
+        <textarea id="type-prompt" placeholder="AIに送信するプロンプトを入力してください。">【プロンプトテンプレ(【】内の文章は適宜置き換えてください)】
+
+これから、【詐欺の名称】の対話シミュレーションを行います。
+
+あなたの役割: 【AIにどのような詐欺師を演じさせるのか入力してください】
+あなたの目標: 【詐欺師の目標を入力して下さい】
+シナリオ: 【シナリオの流れを入力してください。ユーザーに表示するメール(SMS・はがき・インターネット広告)がある場合、「下記を参考に用意してください」という文面と共にテンプレを入力してください】
+詐欺の手口:
+【詐欺の手口を入力してください。改行で複数入力可能です】
+私(ユーザー)の役割: 【どのようなユーザーを想定するか入力してください。特別な条件がない限り「私は、電話を受けた人の役割で、徐々に疑問を持ち始めたり、質問したりするかもしれません。」で大丈夫です】
+終了条件: 【特別な条件がない限り、「ユーザーが(詐欺の名称)であると確信を持つか、詐欺師が不利になる(お金の振り込みを行う見込みがないと判断する)か、ユーザーが詐欺師にお金を渡すと同意した時点でシミュレーションを終了します。」で大丈夫です】
+
+【電話をかけるところから始める場合は「それでは、電話の冒頭から始めてください。」、SMSやメールを表示してから電話を始める場合は「それでは、用意されたメール(SMS・はがき・インターネット広告)を表示し、私が電話をかけるところから始めてください。」と入力してください】</textarea>
+        <br>
+        <input type="button" id="test-button" value="テスト">
+    </div>
+
+    <div id="button-area">
+        <input type="submit" id="type-submit" value="☑ 保存" id="submit">
+    </div>
+    <script type="module" src="../js/promptChange.js"></script>
+</body>
+</html>

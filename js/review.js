@@ -31,8 +31,11 @@ const review = document.getElementById("review");
 */
 
 //詐欺種別
-const type = sessionStorage.getItem("type");
-type_title.innerText = type + "とは";
+if(sessionStorage.getItem("mode") == "test"){
+    type_title.innerText = sessionStorage.getItem("test_name") + "とは(テスト)";
+}else {
+    type_title.innerText = sessionStorage.getItem("type") + "とは";
+}
 
 /*
 //説明文をsupabaseから取得
@@ -97,19 +100,28 @@ fetch('js/prompt.json')
     */
 
 //sessionStorageに格納された説明文を取得
-const saveType = sessionStorage.getItem("saveType");
-if(!saveType){
-    alert("トップページからやり直してください。");
-    location.href = "index.html";
-}
-const typeArray = JSON.parse(saveType);
-const type_prompt = new Map(typeArray.map(item => [item.type, item.content]));
+if(sessionStorage.getItem("mode") == "test"){
+    const save_explain = sessionStorage.getItem("test_explain");
+    if(!save_explain){
+        alert("トップページからやり直してください。");
+    }
+    typeText(save_explain, explanation, 50);
+}else{
+    const type = sessionStorage.getItem("type");
+    const saveType = sessionStorage.getItem("saveType");
+    if(!saveType){
+        alert("トップページからやり直してください。");
+        location.href = "index.html";
+    }
+    const typeArray = JSON.parse(saveType);
+    const type_prompt = new Map(typeArray.map(item => [item.type, item.content]));
 
-//説明文の表示
-if (type_prompt.has(type)) {
-    typeText(type_prompt.get(type), explanation, 50);
-} else {
-    explanation.innerHTML = "説明文が見つかりません。";
+    //説明文の表示
+    if (type_prompt.has(type)) {
+        typeText(type_prompt.get(type), explanation, 50);
+    } else {
+        explanation.innerHTML = "説明文が見つかりません。";
+    }
 }
 
 //返答評価
@@ -164,5 +176,9 @@ if (answer === "yes") {
 
 //TOPに戻る
 document.getElementById("exit-button").addEventListener("click", () => {
-    window.location.href = "index.html"; 
+    if(sessionStorage.getItem("mode") == "test"){
+        window.close();
+    }else {
+        location.href = "index.html";
+    }
 });

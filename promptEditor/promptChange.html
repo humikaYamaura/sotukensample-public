@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <title>プロンプト編集</title>
+    <title>詐欺編集</title>
     <link rel="stylesheet" href="../css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
 </head>
@@ -10,10 +10,25 @@
     <div id="button-area">
         <input type="button" id="exit-button" value="戻る↩" onclick= "window.close();">
     </div>
-    <h1>編集</h1>
+    <h1 id="type-caption">詐欺編集</h1>
     <div id="type">
         <h3>名称(15文字以内)</h3>
         <input type="text" id="type-name" placeholder="詐欺の名称を入力してください。" maxlength="15">
+        <h3>おすすめ表示</h3>
+        <div id="level-radio">
+            <input type="radio" id="damage" name="type-level" value="被害急増中！！">
+            <label for="damage">被害急増中！！</label>
+            <input type="radio" id="elder" name="type-level" value="年配被害急増中！">
+            <label for="elder">年配被害急増中！</label>
+            <input type="radio" id="young" name="type-level" value="若者被害急増中！">
+            <label for="young">若者被害急増中！</label>
+            <input type="radio" id="new" name="type-level" value="(NEW！)">
+            <label for="new">(NEW！)</label>
+            <input type="radio" id="none" name="type-level" value="なし" checked>
+            <label for="none">表示なし</label>
+        </div>
+
+
         <h3>説明(簡易)</h3>
         <input type="text" id="type-simple-explain" placeholder="詐欺の説明を10～20文字程度で入力してください。" maxlength="30">
         <h3>説明</h3>

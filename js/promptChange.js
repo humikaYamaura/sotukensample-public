@@ -29,6 +29,7 @@ export const getColmun = async (table, colmun, type) => {
 };
 
 const type_name = document.getElementById("type-name");
+const type_level = document.getElementsByName("type-level");
 const type_simple = document.getElementById("type-simple-explain");
 const type_explain = document.getElementById("type-explain");
 const type_prompt = document.getElementById("type-prompt");
@@ -36,10 +37,33 @@ const type_prompt = document.getElementById("type-prompt");
 let before_name;
 
 document.addEventListener("DOMContentLoaded", async() => {
+    /*
+    //保存されているID、パスワードの確認
+    const id = sessionStorage.getItem("id");
+    const pass = sessionStorage.getItem("pass");
+    if(id != "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" || pass != "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"){
+        location.href = "promptEdit.html";
+    }
+    */
+   
+    //出力ルールの取得
+    if(!sessionStorage.getItem("savePrompt")){
+        const jsonStr = await getColmun("prompts", "content","出力ルール");
+        sessionStorage.setItem("savePrompt", JSON.stringify(jsonStr));
+        console.log(sessionStorage.getItem("savePrompt"));
+    }
+    
+
     if(sessionStorage.getItem("editType")){
         const name_value = sessionStorage.getItem("editType");
         type_name.value = name_value;
         before_name = name_value;
+        const level_value = await getColmun("explanation","level",name_value);
+        for(let i = 0; i < type_level.length; i++){
+            if(type_level.item(i).value == level_value.level){
+                type_level.item(i).checked = true;
+            }
+        }
         const simple_value = await getColmun("explanation","simple_content",name_value);
         type_simple.value = simple_value.simple_content;
         const explain_value = await getColmun("explanation","content",name_value);
@@ -48,11 +72,24 @@ document.addEventListener("DOMContentLoaded", async() => {
         type_prompt.value = prompt_value.content;
     }else{
         const h1 = document.getElementsByTagName("h1");
-        h1[0].innerText = "追加";
+        h1[0].innerText = "詐欺追加";
     }
 });
 
-document.getElementById("type-submit").addEventListener("click", async() => {
+//入力されたプロンプトの試運転機能
+document.getElementById("test-button").addEventListener("click", () =>{
+    //入力されたプロンプト、名前をセットしてチャット画面に遷移
+    sessionStorage.setItem("test_name",type_name.value);
+    sessionStorage.setItem("test_explain",type_explain.value);
+    sessionStorage.setItem("test_prompt",type_prompt.value);
+    sessionStorage.setItem("mode", "test");
+
+    window.open("../chat.html","_blank");
+});
+
+//保存ボタン
+const submit_button = document.getElementById("type-submit");
+submit_button.addEventListener("click", async() => {
     try{
         if(!type_name.value)
             throw new Error("名称を入力してください。");
@@ -66,6 +103,15 @@ document.getElementById("type-submit").addEventListener("click", async() => {
         alert(err);
         return;
     }
+    submit_button.disabled = true;
+    submit_button.value = "保存中・・・";
+    let check_revel;
+    for(let i = 0; i < type_level.length; i++){
+        if(type_level.item(i).checked){
+            check_revel = type_level.item(i).value;
+        }
+    }
+    console.log(check_revel);
 
     if(sessionStorage.getItem("editType")){
         try{
@@ -75,7 +121,8 @@ document.getElementById("type-submit").addEventListener("click", async() => {
             .update({
                 type: type_name.value,
                 simple_content: type_simple.value,
-                content: type_explain.value
+                content: type_explain.value,
+                level: check_revel
             })
             .eq('type',before_name);
 
@@ -100,6 +147,8 @@ document.getElementById("type-submit").addEventListener("click", async() => {
             window.close();
         }catch(err){
             alert("更新に失敗しました。再度保存ボタンを押してください。：" + err);
+            submit_button.disabled = false;
+            submit_button.value = "☑ 保存";
         }
     }else{
         try{
@@ -134,6 +183,8 @@ document.getElementById("type-submit").addEventListener("click", async() => {
             window.close();
         }catch(err){
             alert("追加に失敗しました。再度保存ボタンを押してください。:" + err);
+            submit_button.disabled = false;
+            submit_button.value = "☑ 保存";
         }
     }
     

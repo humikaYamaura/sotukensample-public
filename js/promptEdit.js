@@ -79,6 +79,8 @@ const sha256 = async function (text) {
 const add_button = document.getElementById("add-button");
 document.addEventListener("DOMContentLoaded", async() => {
   const type_table = document.getElementById("type-table");
+  const load_text = document.getElementById("load-text");
+
   const type_item = await getColmun("explanation", "simple_content");
 
   type_item.forEach(item => {
@@ -130,6 +132,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     tr.appendChild(delete_td);
 
     type_table.appendChild(tr);
+    load_text.innerText = "※変更が反映されない場合、リロードを行ってください。";
   });
   add_button.style.display = "inline";
 });

@@ -246,7 +246,7 @@ window.addEventListener('DOMContentLoaded', async function() {
 
         //入力欄の有効化
         inputTextarea.disabled = false;
-        inputTextarea.placeholder = "入力欄";
+        inputTextarea.placeholder = "送信する文章を入力(Shift + Enterで改行できます)";
         mike_button.disabled = false;
         advice_button.disabled  =false;
 
@@ -324,6 +324,20 @@ document.getElementById('displayButton').addEventListener('click', async functio
     sendText(text);
 });
 
+//Enterキー
+document.addEventListener('keydown', (e) =>{
+    if(e.key === "Enter" && !e.shiftKey){
+        console.log("enter");
+        const text = inputTextarea.value.trim();
+        if (text === "") return;
+        if(text.length > 300){
+            alert("入力できる文字数は300文字までです。");
+            return;
+        }
+        sendText(text);
+    }
+})
+
 //テキスト送信
 const sendText = async function(text){
     const formattedText = text.replace(/\n/g, '<br>');
@@ -397,7 +411,7 @@ const sendText = async function(text){
     }
     //入力欄の有効化
     inputTextarea.disabled = false;
-    inputTextarea.placeholder = "入力欄";
+    inputTextarea.placeholder = "送信する文章を入力(Shift + Enterで改行できます)";
     mike_button.disabled = false;
     advice_button.disabled = false;
 }

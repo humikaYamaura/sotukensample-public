@@ -33,6 +33,8 @@ const type_level = document.getElementsByName("type-level");
 const type_simple = document.getElementById("type-simple-explain");
 const type_explain = document.getElementById("type-explain");
 const type_prompt = document.getElementById("type-prompt");
+
+const submit_button = document.getElementById("type-submit");
 //変更前の名前を保持
 let before_name;
 
@@ -45,7 +47,9 @@ document.addEventListener("DOMContentLoaded", async() => {
         location.href = "promptEdit.html";
     }
     */
-   
+
+    submit_button.disabled = true;
+
     //出力ルールの取得
     if(!sessionStorage.getItem("savePrompt")){
         const jsonStr = await getColmun("prompts", "content","出力ルール");
@@ -74,6 +78,7 @@ document.addEventListener("DOMContentLoaded", async() => {
         const h1 = document.getElementsByTagName("h1");
         h1[0].innerText = "詐欺追加";
     }
+    submit_button.disabled = false;
 });
 
 //入力されたプロンプトの試運転機能
@@ -88,7 +93,6 @@ document.getElementById("test-button").addEventListener("click", () =>{
 });
 
 //保存ボタン
-const submit_button = document.getElementById("type-submit");
 submit_button.addEventListener("click", async() => {
     try{
         if(!type_name.value)

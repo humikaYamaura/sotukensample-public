@@ -44,41 +44,60 @@ export const deleteColmun = async(table, type) => {
   }
 }
 
-/*
-document.getElementById("pass-button").addEventListener("click",async () =>{
+//認証画面の「送信」ボタン
+const pass_button = document.getElementById("pass-button");
+pass_button.addEventListener("click",async () =>{
+  pass_button.disabled = true;
   const id = document.getElementById("id-input").value;
   const pass = document.getElementById("pass-input").value;
 
-  let id_hash; 
-  let pass_hash;
-  await sha256(id).then((hash) => {
-    id_hash = hash;
-  });
-  await sha256(pass).then((hash)=> {
-    pass_hash = hash;
-  });
-
-  //確認処理(ハッシュ値は仮)
-  if(id_hash == "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" && pass_hash == "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"){
-    document.getElementById("pass").style.display = "none"
+  //認証処理
+  try{
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: id,
+      password: pass,
+    });
+    if(error){
+      throw new Error(error.message);
+    }
+    console.log("認証成功");
+    sessionStorage.setItem("id", id);
+    sessionStorage.setItem("pass",pass);
+    document.getElementById("pass").style.display = "none";
     document.getElementById("view").style.display = "block";
-
-    sessionStorage.setItem("id",id_hash);
-    sessionStorage.setItem("pass",pass_hash);
+  }catch(error){
+    console.log("認証失敗", error.message);
+    alert("認証に失敗しました。：" + error.message);
   }
+  pass_button.disabled = false;
 });
-*/
-
-const sha256 = async function (text) {
-  const unit8 = new TextEncoder().encode(text);
-  const digest = await crypto.subtle.digest('SHA-512', unit8);
-
-  return Array.from(new Uint8Array(digest)).map(v => v.toString(16).padStart(2,"0")).join('');
-}
 
 const add_button = document.getElementById("add-button");
 document.addEventListener("DOMContentLoaded", async() => {
+  //認証処理
+  const id = sessionStorage.getItem("id");
+  const pass = sessionStorage.getItem("pass");
+  try{
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: id,
+      password: pass,
+    });
+    if(error){
+      throw new Error(error.message);
+    }
+    console.log("認証成功");
+    sessionStorage.setItem("id", id);
+    sessionStorage.setItem("pass",pass);
+    document.getElementById("pass").style.display = "none";
+    document.getElementById("view").style.display = "block";
+  }catch(error){
+    console.log("認証失敗", error.message);
+  }
+
+
   const type_table = document.getElementById("type-table");
+  const load_text = document.getElementById("load-text");
+
   const type_item = await getColmun("explanation", "simple_content");
 
   type_item.forEach(item => {
@@ -130,6 +149,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     tr.appendChild(delete_td);
 
     type_table.appendChild(tr);
+    load_text.innerText = "※変更が反映されない場合、リロードを行ってください。";
   });
   add_button.style.display = "inline";
 });

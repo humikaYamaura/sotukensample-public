@@ -107,7 +107,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 #type #recommend h2{
     text-align: left;
     margin: 0;
-    margin-left: 20px;
+    margin-left: 30px;
 }
 #type .label{
     display: inline-block;
@@ -473,14 +473,14 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 
 
 /* ここからプロンプト編集画面 */
+/*
 #pass{
     display: none;
 }
-/*
+*/
 #view{
     display: none;
 }
-*/
 #type #type-table{
     margin: auto;
     padding: 10px;
@@ -498,7 +498,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 #type input[type="button"]{
     font-size: 20px;
     transition: all 0.15s ease;
-    border: solid 1px;
+    border: gray solid 1px;
     border-radius: 3px;
 }
 #type #edit-button:hover{

@@ -33,19 +33,32 @@ const type_level = document.getElementsByName("type-level");
 const type_simple = document.getElementById("type-simple-explain");
 const type_explain = document.getElementById("type-explain");
 const type_prompt = document.getElementById("type-prompt");
+
+const submit_button = document.getElementById("type-submit");
 //変更前の名前を保持
 let before_name;
 
 document.addEventListener("DOMContentLoaded", async() => {
-    /*
-    //保存されているID、パスワードの確認
+    submit_button.disabled = true;
+    submit_button.value = "読み込み中・・・";
+
+    //認証処理
     const id = sessionStorage.getItem("id");
     const pass = sessionStorage.getItem("pass");
-    if(id != "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" || pass != "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"){
+    try{
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: id,
+            password: pass,
+        });
+        if(error){
+            throw new Error(error.message);
+        }
+        console.log("認証成功");
+    }catch(error){
+        console.log("認証失敗", error.message);
         location.href = "promptEdit.html";
     }
-    */
-   
+
     //出力ルールの取得
     if(!sessionStorage.getItem("savePrompt")){
         const jsonStr = await getColmun("prompts", "content","出力ルール");
@@ -53,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async() => {
         console.log(sessionStorage.getItem("savePrompt"));
     }
     
-
+    //編集ボタンを押して遷移した場合、詐欺の情報を取得して適用する
     if(sessionStorage.getItem("editType")){
         const name_value = sessionStorage.getItem("editType");
         type_name.value = name_value;
@@ -74,9 +87,25 @@ document.addEventListener("DOMContentLoaded", async() => {
         const h1 = document.getElementsByTagName("h1");
         h1[0].innerText = "詐欺追加";
     }
+
+    submit_button.value = "☑ 保存";
+    submit_button.disabled = false;
 });
 
-//入力されたプロンプトの試運転機能
+//戻るボタン
+document.getElementById("exit-button").addEventListener("click", () => {
+    if(sessionStorage.getItem("editType")){
+        if(confirm("変更を破棄して戻ります。よろしいですか？")){
+            window.close();
+        }
+    }else{
+        if(confirm("詐欺を追加せず戻ります。よろしいですか？")){
+            window.close();
+        }
+    }
+});
+
+//テストボタン(入力されたプロンプトの試運転機能)
 document.getElementById("test-button").addEventListener("click", () =>{
     //入力されたプロンプト、名前をセットしてチャット画面に遷移
     sessionStorage.setItem("test_name",type_name.value);
@@ -88,7 +117,6 @@ document.getElementById("test-button").addEventListener("click", () =>{
 });
 
 //保存ボタン
-const submit_button = document.getElementById("type-submit");
 submit_button.addEventListener("click", async() => {
     try{
         if(!type_name.value)
@@ -105,6 +133,8 @@ submit_button.addEventListener("click", async() => {
     }
     submit_button.disabled = true;
     submit_button.value = "保存中・・・";
+
+    //選択されたおすすめ表示を取得
     let check_revel;
     for(let i = 0; i < type_level.length; i++){
         if(type_level.item(i).checked){
@@ -113,6 +143,7 @@ submit_button.addEventListener("click", async() => {
     }
     console.log(check_revel);
 
+    //編集の場合：UPDATE　追加の場合：INSERT
     if(sessionStorage.getItem("editType")){
         try{
             //explanationテーブル
@@ -177,7 +208,7 @@ submit_button.addEventListener("click", async() => {
 
             if (error2) throw new Error(error2.message);
 
-            console.log("Supabase 更新データ:", data2);
+            console.log("Supabase 追加データ:", data2);
 
             alert("追加に成功しました。変更ページに戻ります。")
             window.close();

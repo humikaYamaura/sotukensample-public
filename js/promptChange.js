@@ -41,21 +41,27 @@ let before_name;
 document.addEventListener("DOMContentLoaded", async() => {
     submit_button.disabled = true;
     submit_button.value = "読み込み中・・・";
+    const h1 = document.getElementsByTagName("h1");
+    h1[0].innerText = "認証情報確認中・・・";
 
     //認証処理
     const id = sessionStorage.getItem("id");
     const pass = sessionStorage.getItem("pass");
-    try{
-        const { data, error } = await supabase.auth.signInWithPassword({
+    if(id && pass){
+        try{
+          const { data, error } = await supabase.auth.signInWithPassword({
             email: id,
             password: pass,
-        });
-        if(error){
+          });
+          if(error){
             throw new Error(error.message);
+          }
+          console.log("認証成功");
+        }catch(error){
+          console.log("認証失敗", error.message);
+          location.href = "promptEdit.html";
         }
-        console.log("認証成功");
-    }catch(error){
-        console.log("認証失敗", error.message);
+    }else {
         location.href = "promptEdit.html";
     }
 
@@ -68,6 +74,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     
     //編集ボタンを押して遷移した場合、詐欺の情報を取得して適用する
     if(sessionStorage.getItem("editType")){
+        h1[0].innerText = "詐欺編集";
         const name_value = sessionStorage.getItem("editType");
         type_name.value = name_value;
         before_name = name_value;
@@ -84,7 +91,6 @@ document.addEventListener("DOMContentLoaded", async() => {
         const prompt_value = await getColmun("prompts","content",name_value);
         type_prompt.value = prompt_value.content;
     }else{
-        const h1 = document.getElementsByTagName("h1");
         h1[0].innerText = "詐欺追加";
     }
 

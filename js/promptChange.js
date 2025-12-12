@@ -45,17 +45,23 @@ document.addEventListener("DOMContentLoaded", async() => {
     //認証処理
     const id = sessionStorage.getItem("id");
     const pass = sessionStorage.getItem("pass");
-    try{
-        const { data, error } = await supabase.auth.signInWithPassword({
+    if(id && pass){
+        try{
+          const { data, error } = await supabase.auth.signInWithPassword({
             email: id,
             password: pass,
-        });
-        if(error){
+          });
+          if(error){
             throw new Error(error.message);
+          }
+          console.log("認証成功");
+          document.getElementById("pass").style.display = "none";
+          document.getElementById("view").style.display = "block";
+        }catch(error){
+          console.log("認証失敗", error.message);
+          location.href = "promptEdit.html";
         }
-        console.log("認証成功");
-    }catch(error){
-        console.log("認証失敗", error.message);
+    }else {
         location.href = "promptEdit.html";
     }
 

@@ -80,7 +80,7 @@ const add_button = document.getElementById("add-button");
 const check_text = document.getElementById("check-text");
 document.addEventListener("DOMContentLoaded", async() => {
   //認証処理
-  check_text.innerText = "ログイン情報の確認中・・・";
+  check_text.innerText = "認証情報確認中・・・";
   const id = sessionStorage.getItem("id");
   const pass = sessionStorage.getItem("pass");
   if(id && pass){

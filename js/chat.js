@@ -40,7 +40,11 @@ let sessionId = "";
 
 //詐欺種類
 const type = sessionStorage.getItem("type");
-document.getElementById("type-caption").innerHTML = type;
+if(sessionStorage.getItem("mode")=="test"){
+    document.getElementById("type-caption").innerHTML = sessionStorage.getItem("test_name") + "(テスト)";
+}else{
+    document.getElementById("type-caption").innerHTML = type;
+}
 
 //入力欄の設定
 const textarea = document.getElementById('textarea');
@@ -168,26 +172,53 @@ window.addEventListener('DOMContentLoaded', async function() {
     */
 
     try{
-        //sessionStorageに格納されたプロンプトを取得
-        const savePrompt = sessionStorage.getItem("savePrompt");
-        if(!savePrompt){
-            throw new Error("トップページからやり直してください。");
-        }
-        const promptArray = JSON.parse(savePrompt);
-        const type_prompt = new Map(promptArray.map(item => [item.type, item.content]));
+        let prompt;
+        let rule;
+        if(sessionStorage.getItem("mode")== "test"){
+            //テスト遷移時に格納されたプロンプトを取得
+            prompt = sessionStorage.getItem("test_prompt");
+            //チャットセッション開始
+            const response = await fetch("http://localhost:3001/start");
+            if(!response.ok){
+                throw new Error(response.statusText);
+            }
+            const data = await response.json();
+            sessionId = data.sessionId;
+            //ローカルストレージにセッションIDを保存(再訪時に削除)
+            localStorage.setItem("sessionID",sessionId);
 
-        //チャットセッション開始
-        const response = await fetch("http://localhost:3001/start");
-        if(!response.ok){
-            throw new Error(response.statusText);
+            const savePrompt = sessionStorage.getItem("savePrompt");
+            if(!savePrompt){
+                throw new Error("トップページからやり直してください。");
+            }
+            const promptArray = JSON.parse(savePrompt);
+            rule = promptArray.content;
+
+        }else {
+            //初期読み込み時に格納されたプロンプトを取得
+            const savePrompt = sessionStorage.getItem("savePrompt");
+            if(!savePrompt){
+                throw new Error("トップページからやり直してください。");
+            }
+            const promptArray = JSON.parse(savePrompt);
+            const type_prompt = new Map(promptArray.map(item => [item.type, item.content]));
+
+            //チャットセッション開始
+            const response = await fetch("http://localhost:3001/start");
+            if(!response.ok){
+                throw new Error(response.statusText);
+            }
+            const data = await response.json();
+            sessionId = data.sessionId;
+            //ローカルストレージにセッションIDを保存(再訪時に削除)
+            localStorage.setItem("sessionID",sessionId);
+            
+            //プロンプトを用意する
+            prompt = type_prompt.get(type);
+            rule = type_prompt.get("出力ルール");
+
+            console.log(type_prompt);
         }
-        const data = await response.json();
-        sessionId = data.sessionId;
-        //ローカルストレージにセッションIDを保存(再訪時に削除)
-        localStorage.setItem("sessionID",sessionId);
-        
-        //プロンプトを用意する
-        const prompt = type_prompt.get(type);
 
         //入力したテキストを送信
         const response2 = await fetch("http://localhost:3001/send",{
@@ -197,7 +228,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             },
             body: JSON.stringify({
                 sessionId: sessionId,
-                prompt: type_prompt.get("出力ルール") + prompt
+                prompt: rule + prompt
             })
         });
         if(!response2.ok){
@@ -222,7 +253,11 @@ window.addEventListener('DOMContentLoaded', async function() {
     }catch(error){
         console.error("エラー：", error);
         this.alert('セッション開始エラー：' + error.message);
-        window.location.href = "index.html";
+        if(sessionStorage.getItem("mode") == "test"){
+            window.close();
+        }else {
+            location.href = "index.html";
+        }
     }
 });
 
@@ -370,7 +405,11 @@ const sendText = async function(text){
 //TOPボタンが押された時
 document.getElementById("exit-button").addEventListener("click",()=> {
     session_del(sessionId);
-    location.href = "index.html";
+    if(sessionStorage.getItem("mode") == "test"){
+        window.close();
+    }else {
+        location.href = "index.html";
+    }
 });
 
 document.getElementById("fin-button").addEventListener("click",()=> {

@@ -82,14 +82,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         const jsonStr = await getColmun("explanation","simple_content");
         sessionStorage.setItem("saveExplain", JSON.stringify(jsonStr));
     }
+    if(!sessionStorage.getItem("saveLevel")){
+        const jsonStr = await getColmun("explanation","level");
+        sessionStorage.setItem("saveLevel",JSON.stringify(jsonStr));
+    }
 
-    //説明文をsessionStorageから取得
+    //説明文、おススメレベルをsessionStorageから取得
     //テキスト → Array → Mapの順で変換する
     const saveExplain = sessionStorage.getItem("saveExplain");
     const explainArray = JSON.parse(saveExplain);
     const explainMap = new Map(explainArray.map(item => [item.type, item.simple_content]));
 
-    const type = document.getElementById("type");
+    const saveLevel = sessionStorage.getItem("saveLevel");
+    const levelArray = JSON.parse(saveLevel);
+    const levelMap = new Map(levelArray.map(item => [item.type, item.level]));
+
+    const recomment_h2 = document.getElementById("recommend-h2");
+    const type_recommend = document.getElementById("recommend");
+    const type_nomal = document.getElementById("nomal");
+
+    //おすすめ詐欺があるか？
+    let isRecommend = false;
     //ラジオボタン生成
     explainMap.forEach((elem, name) => {
         const input = document.createElement("input");
@@ -101,8 +114,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         label.htmlFor = name;
         label.classList.add("label");
         label.innerText = name;
-        type.insertBefore(input,explain);
-        type.insertBefore(label,explain);
+        if(levelMap.get(name) != "なし"){
+            const before_label = document.createElement("label");
+            before_label.innerText = levelMap.get(name);
+            before_label.htmlFor = name;
+
+            if(levelMap.get(name) == "被害急増中！！"){
+                label.classList.add("red");
+                label.appendChild(before_label);
+                recomment_h2.after(label);
+                recomment_h2.after(input);
+            }else{
+                label.classList.add("purple")
+                label.appendChild(before_label);
+                type_recommend.appendChild(input);
+                type_recommend.appendChild(label);
+                
+            }
+            isRecommend = true;
+        }else{
+            type_nomal.appendChild(input);
+            type_nomal.appendChild(label);
+        }
     });
 
     //簡易説明表示
@@ -114,6 +147,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     //初期表示(一番上の詐欺を選択)
     types[0].checked = true;
     explain.innerHTML = explainMap.get(types[0].value);
+
+    if(isRecommend){
+        type_recommend.style.display = "block";
+    }
 });
 
 //決定ボタン

@@ -170,7 +170,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         type_prompt = prompts_map; 
 
     */
-
+   
     try{
         let prompt;
         let rule;
@@ -195,12 +195,36 @@ window.addEventListener('DOMContentLoaded', async function() {
             rule = promptArray.content;
 
         }else {
+            
             //初期読み込み時に格納されたプロンプトを取得
             const savePrompt = sessionStorage.getItem("savePrompt");
             if(!savePrompt){
                 throw new Error("トップページからやり直してください。");
             }
-            const promptArray = JSON.parse(savePrompt);
+            let promptArray = JSON.parse(savePrompt);
+            
+            if (sessionStorage.getItem("mode") === "詐欺体験クイズ") {
+
+            // クイズ：prompts or prompts_quiz をランダム
+            const useQuizPrompt = Math.random() < 0.5;
+
+                if (useQuizPrompt) {
+                    const saveQuizPrompt = sessionStorage.getItem("saveQuizPrompt");
+                    if (!saveQuizPrompt) {
+                        throw new Error("トップページからやり直してください。");
+                    }
+                    promptArray = JSON.parse(saveQuizPrompt);
+                    console.log("prompts_quiz を使用");
+                } else {
+                    const savePrompt = sessionStorage.getItem("savePrompt");
+                    if (!savePrompt) {
+                        throw new Error("トップページからやり直してください。");
+                    }
+                    promptArray = JSON.parse(savePrompt);
+                    console.log("prompts を使用");
+                }
+            } 
+        
             const type_prompt = new Map(promptArray.map(item => [item.type, item.content]));
 
             //チャットセッション開始
@@ -426,17 +450,18 @@ document.getElementById("exit-button").addEventListener("click",()=> {
     }
 });
 
-document.getElementById("fin-button").addEventListener("click",()=> {
+document.getElementById("quiz-form").addEventListener("submit", (e) => {
+    e.preventDefault(); 
+
     let url = "";
-    if(sessionStorage.getItem("mode") == "詐欺体験クイズ"){
-        preventDefault(); // 通常の送信を止める
+    if (sessionStorage.getItem("mode") === "詐欺体験クイズ") {
 
-        // 選択されたラジオボタンの値を取得
-        const answer = document.querySelector('input[name="quiz-answer"]:checked').value;
+        const answer = document.querySelector(
+          'input[name="quiz-answer"]:checked'
+        ).value;
 
-        // 結果ページに値をURLで渡して遷移
-        url = `quiz-review.html?answer=${answer}`
-    }else {
+        url = `quiz-review.html?answer=${answer}`;
+    } else {
         url = "trial-review.html";
     }
 

@@ -78,16 +78,42 @@ document.addEventListener("DOMContentLoaded", async() => {
         const name_value = sessionStorage.getItem("editType");
         type_name.value = name_value;
         before_name = name_value;
-        const level_value = await getColmun("explanation","level",name_value);
+
+        let colmun;
+        try {
+            const { data, error } = await supabase
+            .from("explanation")
+            .select("content, simple_content, level")
+            .eq('type',name_value);
+
+            if (error) throw new Error(error.message);
+
+            console.log("Supabase 取得データ:", data[0]);
+
+            colmun = data[0];
+
+        } catch (error) {
+            alert("データの読み込みに失敗しました：" + error);
+            location.href = "promptEdit.html";
+        }
+
+        const level_value = colmun.level;
+        console.log(level_value);
+        let isValue = false;
         for(let i = 0; i < type_level.length; i++){
-            if(type_level.item(i).value == level_value.level){
+            if(type_level.item(i).value == level_value){
                 type_level.item(i).checked = true;
+                isValue = true;
             }
         }
-        const simple_value = await getColmun("explanation","simple_content",name_value);
-        type_simple.value = simple_value.simple_content;
-        const explain_value = await getColmun("explanation","content",name_value);
-        type_explain.value = explain_value.content;
+        if(!isValue){
+            type_level.item(4).checked = true;
+            const else_text = document.getElementById("else-text");
+            else_text.value = level_value;
+        }
+        type_simple.value = colmun.simple_content;
+        type_explain.value = colmun.content;
+
         const prompt_value = await getColmun("prompts","content",name_value);
         type_prompt.value = prompt_value.content;
     }else{
@@ -146,6 +172,10 @@ submit_button.addEventListener("click", async() => {
         if(type_level.item(i).checked){
             check_revel = type_level.item(i).value;
         }
+    }
+    //おすすめ表示にその他が選択された場合、入力されたものを適用
+    if(check_revel == "その他"){
+        check_revel = document.getElementById("else-text").value;
     }
     console.log(check_revel);
 

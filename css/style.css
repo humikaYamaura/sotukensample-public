@@ -534,9 +534,14 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 #type input[type="text"]{
     width: 400px;
 }
+
+#type #else-text{
+    width: 150px;
+}
+
 #type #level-radio input[type="radio"]{
     display: inline;
-    margin: 0 0 0 20px;
+    margin: 0 0 15px 20px;
 }
 
 

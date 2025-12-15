@@ -12,8 +12,8 @@
     </div>
     <h1 id="type-caption">詐欺編集</h1>
     <div id="type">
-        <h3>名称(15文字以内)</h3>
-        <input type="text" id="type-name" placeholder="詐欺の名称を入力してください。" maxlength="15">
+        <h3>名称</h3>
+        <input type="text" id="type-name" placeholder="詐欺の名称を入力してください(15文字以内)。" maxlength="15">
         <h3>おすすめ表示</h3>
         <div id="level-radio">
             <input type="radio" id="damage" name="type-level" value="被害急増中！！">
@@ -24,6 +24,10 @@
             <label for="young">若者被害急増中！</label>
             <input type="radio" id="new" name="type-level" value="(NEW！)">
             <label for="new">(NEW！)</label>
+            <br>
+            <input type="radio" id="else" name="type-level" value="その他">
+            <label for="else">その他：<input type="text" id="else-text" placeholder="15文字以内" maxlength="15"></label>
+
             <input type="radio" id="none" name="type-level" value="なし" checked>
             <label for="none">表示なし</label>
         </div>

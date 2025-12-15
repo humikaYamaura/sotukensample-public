@@ -33,6 +33,7 @@ const type_level = document.getElementsByName("type-level");
 const type_simple = document.getElementById("type-simple-explain");
 const type_explain = document.getElementById("type-explain");
 const type_prompt = document.getElementById("type-prompt");
+const type_prompt_quiz = document.getElementById("type-prompt-quiz");
 
 const submit_button = document.getElementById("type-submit");
 //変更前の名前を保持
@@ -114,8 +115,13 @@ document.addEventListener("DOMContentLoaded", async() => {
         type_simple.value = colmun.simple_content;
         type_explain.value = colmun.content;
 
+        //プロンプト
         const prompt_value = await getColmun("prompts","content",name_value);
         type_prompt.value = prompt_value.content;
+
+        //プロンプト(クイズ)
+        const prompt_quiz = await getColmun("prompts_quiz","content",name_value);
+        type_prompt_quiz.value = prompt_quiz.content;
     }else{
         h1[0].innerText = "詐欺追加";
     }
@@ -148,6 +154,17 @@ document.getElementById("test-button").addEventListener("click", () =>{
     window.open("../chat.html","_blank");
 });
 
+//テストボタン(クイズ、詐欺じゃないver)
+document.getElementById("test-button-quiz").addEventListener("click",() =>{
+    //入力されたプロンプト、名前をセットしてチャット画面に遷移
+    sessionStorage.setItem("test_name",type_name.value);
+    sessionStorage.setItem("test_explain",type_explain.value);
+    sessionStorage.setItem("test_prompt",type_prompt_quiz.value);
+    sessionStorage.setItem("mode", "test");
+
+    window.open("../chat.html","_blank");
+});
+
 //保存ボタン
 submit_button.addEventListener("click", async() => {
     try{
@@ -157,7 +174,7 @@ submit_button.addEventListener("click", async() => {
             throw new Error("説明(簡易)を入力してください。");
         if(!type_explain.value)
             throw new Error("説明を入力してください。");
-        if(!type_prompt.value)
+        if(!type_prompt.value || !type_prompt_quiz.value)
             throw new Error("プロンプトを入力して下さい。");
     }catch(err){
         alert(err);
@@ -209,6 +226,19 @@ submit_button.addEventListener("click", async() => {
             if (error2) throw new Error(error2.message);
 
             console.log("Supabase 更新データ:", data2);
+
+            //prompts_quizテーブル
+            const { data3, error3 } = await supabase
+            .from("prompts_quiz")
+            .update({
+                type: type_name.value,
+                content: type_prompt_quiz.value
+            })
+            .eq('type',before_name);
+
+            if (error3) throw new Error(error3.message);
+
+            console.log("Supabase 更新データ:", data3);
 
             alert("更新に成功しました。変更ページに戻ります。");
             window.close();

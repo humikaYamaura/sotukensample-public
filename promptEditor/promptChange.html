@@ -12,8 +12,8 @@
     </div>
     <h1 id="type-caption">詐欺編集</h1>
     <div id="type">
-        <h3>名称(15文字以内)</h3>
-        <input type="text" id="type-name" placeholder="詐欺の名称を入力してください。" maxlength="15">
+        <h3>名称</h3>
+        <input type="text" id="type-name" placeholder="詐欺の名称を入力してください(15文字以内)。" maxlength="15">
         <h3>おすすめ表示</h3>
         <div id="level-radio">
             <input type="radio" id="damage" name="type-level" value="被害急増中！！">
@@ -24,6 +24,10 @@
             <label for="young">若者被害急増中！</label>
             <input type="radio" id="new" name="type-level" value="(NEW！)">
             <label for="new">(NEW！)</label>
+            <br>
+            <input type="radio" id="else" name="type-level" value="その他">
+            <label for="else">その他：<input type="text" id="else-text" placeholder="15文字以内" maxlength="15"></label>
+
             <input type="radio" id="none" name="type-level" value="なし" checked>
             <label for="none">表示なし</label>
         </div>
@@ -35,7 +39,8 @@
         <textarea id="type-explain" placeholder="シミュレーション終了後に表示する詐欺の説明を250～300文字程度で入力してください。" maxlength="400"></textarea>
         <h3>プロンプト</h3>
         <p>プロンプトとは？<br>詐欺師AIに送信する文章です。</p>
-        <textarea id="type-prompt" placeholder="AIに送信するプロンプトを入力してください。">【プロンプトテンプレ(【】内の文章は適宜置き換えてください)】
+        <h4>詐欺体験/詐欺判定クイズ(詐欺ver)</h4>
+        <textarea id="type-prompt" placeholder="AIに送信するプロンプトを入力してください(詐欺)。">【プロンプトテンプレ(【】内の文章は適宜置き換えてください)】
 
 これから、【詐欺の名称】の対話シミュレーションを行います。
 
@@ -50,6 +55,21 @@
 【電話をかけるところから始める場合は「それでは、電話の冒頭から始めてください。」、SMSやメールを表示してから電話を始める場合は「それでは、用意されたメール(SMS・はがき・インターネット広告)を表示し、私が電話をかけるところから始めてください。」と入力してください】</textarea>
         <br>
         <input type="button" id="test-button" value="テスト">
+        <hr>
+        <h4>詐欺判定クイズ(詐欺じゃないver)</h4>
+        <textarea id="type-prompt-quiz" placeholder="AIに送信するプロンプトを入力してください。">【プロンプトテンプレ(【】内の文章は適宜置き換えてください)】
+
+これから、【詐欺の名称】っぽいけど【詐欺の名称】じゃないの対話シミュレーションを行います。
+
+あなたの役割: 【AIにどのような詐欺師を演じさせるのか入力してください】
+あなたの目標: 【詐欺師の目標を入力して下さい】
+シナリオ: 【シナリオの流れを入力してください。ユーザーに表示するメール(SMS・はがき・インターネット広告)がある場合、「下記を参考に用意してください」という文面と共にテンプレを入力してください】
+私(ユーザー)の役割: 【どのようなユーザーを想定するか入力してください。特別な条件がない限り「私は、電話を受けた人の役割で、徐々に疑問を持ち始めたり、質問したりするかもしれません。」で大丈夫です】
+終了条件: 【特別な条件がない限り、「ユーザーが(詐欺の名称)であると確信を持つか、詐欺師が不利になる(お金の振り込みを行う見込みがないと判断する)か、ユーザーが詐欺師にお金を渡すと同意した時点でシミュレーションを終了します。」で大丈夫です】
+
+【電話をかけるところから始める場合は「それでは、電話の冒頭から始めてください。」、SMSやメールを表示してから電話を始める場合は「それでは、用意されたメール(SMS・はがき・インターネット広告)を表示し、私が電話をかけるところから始めてください。」と入力してください】</textarea>
+        <br>
+        <input type="button" id="test-button-quiz" value="テスト">
     </div>
 
     <div id="button-area">

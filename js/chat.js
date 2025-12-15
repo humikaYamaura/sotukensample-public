@@ -450,20 +450,22 @@ document.getElementById("exit-button").addEventListener("click",()=> {
     }
 });
 
-document.getElementById("quiz-form").addEventListener("submit", (e) => {
-    e.preventDefault(); 
+if (sessionStorage.getItem("mode") === "詐欺体験クイズ") {
+    document.getElementById("quiz-form").addEventListener("submit", (e) => {
+        e.preventDefault(); 
 
-    let url = "";
-    if (sessionStorage.getItem("mode") === "詐欺体験クイズ") {
+        let url = "";
 
-        const answer = document.querySelector(
-          'input[name="quiz-answer"]:checked'
-        ).value;
+            const answer = document.querySelector(
+            'input[name="quiz-answer"]:checked'
+            ).value;
 
-        url = `quiz-review.html?answer=${answer}`;
-    } else {
-        url = "trial-review.html";
-    }
+            url = `quiz-review.html?answer=${answer}`;
 
-    window.location.href = url;
-});
+        window.location.href = url;
+    });
+}else{
+    document.getElementById("fin-button").addEventListener("click",()=> {
+        window.location.href = "trial-review.html";
+    });
+}

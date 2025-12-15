@@ -86,6 +86,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const jsonStr = await getColmun("explanation","level");
         sessionStorage.setItem("saveLevel",JSON.stringify(jsonStr));
     }
+    if(!sessionStorage.getItem("saveQuizPrompt")){
+        const jsonStr = await getColmun("prompts_quiz","content");
+        sessionStorage.setItem("saveQuizPrompt",JSON.stringify(jsonStr));
+        
+    }
 
     //説明文、おススメレベルをsessionStorageから取得
     //テキスト → Array → Mapの順で変換する

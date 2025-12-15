@@ -22,7 +22,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai'); // Google Gemin
 const app = express();
 // サーバーがリッスンするポート番号を定義。
 // 環境変数 `PORT` が設定されていればそれを使用し、なければデフォルトで3000番ポートを使用します。
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // ===============================================
 // 4. CORS (Cross-Origin Resource Sharing) 設定

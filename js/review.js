@@ -164,14 +164,26 @@ if(sessionStorage.getItem(localStorage.getItem("sessionID") + "_review")){
 }
 
 //正解・不正解判定
+
 const params = new URLSearchParams(location.search);
-const answer = params.get("answer");
+const answer = params.get("answer"); // yes / no
+const source = sessionStorage.getItem("quizSource"); // prompts or prompts_quiz
+
 const msg = document.getElementById("message");
 
-if (answer === "yes") {
-    msg.innerHTML  = "！！正解！！<br>このチャットは詐欺です！！";
-} else if (answer === "no") {
-    msg.innerHTML  = "！！不正解！！<br>このチャットは詐欺です！！";
+if (source === "prompts") {
+    if (answer === "yes") {
+        msg.innerHTML = " 正解！！<br>このクイズは詐欺です";
+    } else {
+        msg.innerHTML = " 不正解！！<br>このクイズは詐欺です";
+    }
+
+} else if (source === "prompts_quiz") {
+    if (answer === "no") {
+        msg.innerHTML = " 正解！！<br>このクイズは詐欺じゃありません";
+    } else {
+        msg.innerHTML = " 不正解！！<br>このクイズは詐欺じゃありません";
+    }
 }
 
 //TOPに戻る

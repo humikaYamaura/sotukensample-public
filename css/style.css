@@ -474,11 +474,22 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 
 
 /* ここからプロンプト編集画面 */
-/*
+
 #pass{
-    display: none;
+    text-align: center;
+    min-height: 500px;
 }
-*/
+#pass #pass-form{
+    margin: auto;
+}
+#pass #pass-form input{
+    margin: 30px;
+}
+#pass input[type="button"]{
+    margin: 10px;
+    padding:10px 20px;
+}
+
 #view{
     display: none;
 }

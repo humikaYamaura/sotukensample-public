@@ -174,6 +174,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     try{
         let prompt;
         let rule;
+        let source;
         if(sessionStorage.getItem("mode")== "test"){
             //テスト遷移時に格納されたプロンプトを取得
             prompt = sessionStorage.getItem("test_prompt");
@@ -214,12 +215,14 @@ window.addEventListener('DOMContentLoaded', async function() {
                         throw new Error("トップページからやり直してください。");
                     }
                     promptArray = JSON.parse(saveQuizPrompt);
+                    source="prompts";
                     console.log("prompts_quiz を使用");
                 } else {
                     const savePrompt = sessionStorage.getItem("savePrompt");
                     if (!savePrompt) {
                         throw new Error("トップページからやり直してください。");
                     }
+                    source="prompts";
                     promptArray = JSON.parse(savePrompt);
                     console.log("prompts を使用");
                 }
@@ -242,6 +245,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             rule = type_prompt.get("出力ルール");
 
             console.log(type_prompt);
+            sessionStorage.setItem("promptSource", source);
         }
 
         //入力したテキストを送信

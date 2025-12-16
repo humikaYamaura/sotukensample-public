@@ -147,7 +147,8 @@ document.getElementById("exit-button").addEventListener("click", () => {
 document.getElementById("test-button").addEventListener("click", () =>{
     //入力されたプロンプト、名前をセットしてチャット画面に遷移
     sessionStorage.setItem("test_name",type_name.value);
-    sessionStorage.setItem("test_explain",type_explain.value);
+    const type_explain_replace = type_explain.value.replace(/\r?\n/g, "<br>");
+    sessionStorage.setItem("test_explain",type_explain_replace);
     sessionStorage.setItem("test_prompt",type_prompt.value);
     sessionStorage.setItem("mode", "test");
 

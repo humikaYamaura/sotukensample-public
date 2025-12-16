@@ -215,7 +215,7 @@ window.addEventListener('DOMContentLoaded', async function() {
                         throw new Error("トップページからやり直してください。");
                     }
                     promptArray = JSON.parse(saveQuizPrompt);
-                    source="prompts";
+                    source="prompts_quiz";
                     console.log("prompts_quiz を使用");
                     sessionStorage.setItem("promptSource", source);
                     console.log("保存確認:", sessionStorage.getItem("promptSource"));

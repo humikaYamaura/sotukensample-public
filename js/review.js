@@ -165,11 +165,16 @@ if(sessionStorage.getItem(localStorage.getItem("sessionID") + "_review")){
 
 //正解・不正解判定
 
-const params = new URLSearchParams(location.search);
-const answer = params.get("answer"); // yes / no
-const source = sessionStorage.getItem("quizSource"); // prompts or prompts_quiz
+const params = new URLSearchParams(window.location.search);
+const answer = params.get("quiz-answer"); // yes / no
+const source = sessionStorage.getItem("promptSource"); // prompts or prompts_quiz
 
 const msg = document.getElementById("message");
+
+if (!answer || !source) {
+    msg.textContent = "エラー：最初からやり直してください";
+    throw new Error("answer または source が取得できません");
+}
 
 if (source === "prompts") {
     if (answer === "yes") {

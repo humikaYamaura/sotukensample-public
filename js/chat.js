@@ -217,6 +217,8 @@ window.addEventListener('DOMContentLoaded', async function() {
                     promptArray = JSON.parse(saveQuizPrompt);
                     source="prompts";
                     console.log("prompts_quiz を使用");
+                    sessionStorage.setItem("promptSource", source);
+                    console.log("保存確認:", sessionStorage.getItem("promptSource"));
                 } else {
                     const savePrompt = sessionStorage.getItem("savePrompt");
                     if (!savePrompt) {
@@ -225,6 +227,8 @@ window.addEventListener('DOMContentLoaded', async function() {
                     source="prompts";
                     promptArray = JSON.parse(savePrompt);
                     console.log("prompts を使用");
+                    sessionStorage.setItem("promptSource", source);
+                    console.log("保存確認:", sessionStorage.getItem("promptSource"));
                 }
             } 
         

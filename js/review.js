@@ -166,8 +166,11 @@ if(sessionStorage.getItem(localStorage.getItem("sessionID") + "_review")){
 //正解・不正解判定
 
 const params = new URLSearchParams(window.location.search);
-const answer = params.get("quiz-answer"); // yes / no
+const answer = params.get("answer"); // yes / no
 const source = sessionStorage.getItem("promptSource"); // prompts or prompts_quiz
+console.log("location.search =", window.location.search);
+console.log("answer =", answer);
+console.log("source =", source);
 
 const msg = document.getElementById("message");
 
@@ -178,19 +181,18 @@ if (!answer || !source) {
 
 if (source === "prompts") {
     if (answer === "yes") {
-        msg.innerHTML = " 正解！！<br>このクイズは詐欺です";
+        msg.innerHTML = " ！！正解！！<br>このクイズは詐欺です";
     } else {
-        msg.innerHTML = " 不正解！！<br>このクイズは詐欺です";
+        msg.innerHTML = " ！！不正解！！<br>このクイズは詐欺です";
     }
 
 } else if (source === "prompts_quiz") {
     if (answer === "no") {
-        msg.innerHTML = " 正解！！<br>このクイズは詐欺じゃありません";
+        msg.innerHTML = " ！！正解！！<br>このクイズは詐欺じゃありません";
     } else {
-        msg.innerHTML = " 不正解！！<br>このクイズは詐欺じゃありません";
+        msg.innerHTML = " ！！不正解！！<br>このクイズは詐欺じゃありません";
     }
 }
-
 //TOPに戻る
 document.getElementById("exit-button").addEventListener("click", () => {
     if(sessionStorage.getItem("mode") == "test"){

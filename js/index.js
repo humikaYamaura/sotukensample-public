@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const jsonStr = await getColmun("explanation","content");
         jsonStr.forEach((item) => {
             //改行コードを<br>に変換
-            item.content = item.content.replace(/\r\n/g, "<br>");
+            item.content = item.content.replace(/\r?\n/g, "<br>");
         });
         sessionStorage.setItem("saveType", JSON.stringify(jsonStr));
     }

@@ -247,6 +247,10 @@ window.addEventListener('DOMContentLoaded', async function() {
             //プロンプトを用意する
             prompt = type_prompt.get(type);
             rule = type_prompt.get("出力ルール");
+            if(sessionStorage.getItem("mode")== "詐欺体験クイズ"){
+                //「詐欺師の有利・不利」で答えをネタバレしてくることがあるため除外
+                rule = rule.replace("詐欺師の有利・不利を「【詐欺師の有利・不利】」という表題と50文字程度、","");
+            }
 
             console.log(type_prompt);
             sessionStorage.setItem("promptSource", source);

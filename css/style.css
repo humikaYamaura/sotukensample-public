@@ -555,6 +555,9 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     margin: 0 0 15px 20px;
 }
 
+#type h4{
+    font-size: 16px;
+}
 
 #type textarea{
     width: 75%;
@@ -595,7 +598,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 }
 
 #type #test-button-quiz:hover{
-    background-color: rgb(49, 253, 134);
+    background-color: rgb(135, 255, 207);
     border: 1px solid rgb(7, 167, 106);
     box-shadow: none;
     transform: translateY(10px);

@@ -174,11 +174,13 @@ console.log("source =", source);
 
 const msg = document.getElementById("message");
 
-if (!answer || !source) {
+if(sessionStorage.getItem("mode") == "詐欺体験クイズ"){
+    if (!answer || !source) {
     msg.textContent = "エラー：最初からやり直してください";
     throw new Error("answer または source が取得できません");
 }
 
+}
 if (source === "prompts") {
     if (answer === "yes") {
         msg.innerHTML = " ！！正解！！<br>このクイズは詐欺です";

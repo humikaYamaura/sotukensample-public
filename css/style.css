@@ -1,5 +1,7 @@
 html{
     background-color: rgb(230,244,241);
+    /*background-image:url("../img/sagishi_man.png");
+    background-attachment: fixed;*/
 }
 input[type="button"],input[type="submit"],input[type="radio"] + .label{
     cursor: pointer;
@@ -77,14 +79,14 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     transition: all 0.15s ease;
 }
 #mode #quiz{
-    background-color: rgb(230,244,241);
+    background-color: rgba(230,244,241,0.95);
     border: solid 4px rgb(103,231,212);
     border-bottom: none;
     transition: all 0.15s ease;
 }
 
 #type{
-    background-color: white;
+    background-color: rgba(255, 255, 255 ,0.9);
     border-radius: 34px;
     max-width: 1291px;
     margin: auto;
@@ -118,7 +120,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     padding: 0 50px;
     align-content: center;
     border-radius: 25px;
-    background-color: white;
+    background-color: rgba(255, 255, 255 ,0.9);
     border: solid 5px rgb(121, 197, 255);
     font-size: 20px;
 }
@@ -178,6 +180,18 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     content: "📖";
     font-size: 30px;
 }
+
+.personality-area{
+    text-align: left;
+    margin-top: 30px;
+    display: inline-block;
+}
+.personality-area select{
+    font-size: 15px;
+    border-radius: 5px;
+    padding: 3px;
+    margin: 3px;
+}
 /* ここまでトップ画面 */
 
 
@@ -190,7 +204,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     max-width: 1150px;
     height: 140px;
     margin: 10px auto 50px auto;
-    background-color: white;
+    background-color: rgba(255, 255, 255 ,0.9);
     border-radius: 34px;
     border: solid 6px rgb(168,174,255);
     box-shadow: 15px 13px 0 rgb(168,174,255);

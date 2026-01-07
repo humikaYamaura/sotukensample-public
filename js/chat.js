@@ -46,6 +46,15 @@ if(sessionStorage.getItem("mode")=="test"){
     document.getElementById("type-caption").innerHTML = type;
 }
 
+//ユーザーの特徴
+const user_gender = sessionStorage.getItem("user-gender");
+const user_age = sessionStorage.getItem("user-age");
+const user_family = sessionStorage.getItem("user-family");
+
+console.log(user_gender);
+console.log(user_age);
+console.log(user_family);
+
 //入力欄の設定
 const textarea = document.getElementById('textarea');
 const inputTextarea = document.getElementById('textarea');
@@ -140,6 +149,9 @@ window.addEventListener('DOMContentLoaded', async function() {
     } else if (pageName === 'quiz-chat.html') {
         firstAiComment.classList.add('quiz-aicomment');
         noticeComment.classList.add('quiz-aicomment');
+        const submit_button = document.getElementById("fin-button");
+        submit_button.style.boxShadow = "0 10px 0 rgba(40, 176, 155, 1)";
+        submit_button.style.border = "3px solid rgba(40, 176, 155, 1)";
     }
     noticeComment.appendChild(noticeP);
     chatBox.appendChild(noticeComment);
@@ -256,6 +268,23 @@ window.addEventListener('DOMContentLoaded', async function() {
             sessionStorage.setItem("promptSource", source);
         }
 
+        let user_info = "";
+        if(user_gender && user_gender != "指定なし"){
+            user_info += "性別が「"+ user_gender +"」";
+        }
+        if(user_age && user_age != "指定なし"){
+            user_info += "、年代が「"+ user_age +"」";
+        }
+        if(user_family && user_family != "指定なし"){
+            user_info += "、家族構成が「"+ user_family +"」";
+        }
+    
+        if(user_info){
+            user_info = "\n【ユーザーの特徴】\n 私(ユーザー)は、" + user_info + "です。\nこれらの情報を適宜用いてシミュレーションを行ってください。\n\n";
+        }else{
+            user_info = "\n";
+        }
+
         //入力したテキストを送信
         const response2 = await fetch("http://localhost:3001/send",{
             method: 'POST',
@@ -264,7 +293,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             },
             body: JSON.stringify({
                 sessionId: sessionId,
-                prompt: rule + prompt
+                prompt: rule + user_info + prompt
             })
         });
         if(!response2.ok){

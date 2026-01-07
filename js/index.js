@@ -19,7 +19,7 @@ const submit_button = document.getElementById("submit");
 //詐欺体験ボタン
 trial_button.addEventListener("click", () => {
     mode = "詐欺体験";
-    quiz_button.style.backgroundColor = "rgb(230,244,241)";
+    quiz_button.style.backgroundColor = "rgba(230,244,241,0.95)";
     trial_button.style.backgroundColor = "rgb(168, 174, 255)";
     type_area.style.border= "solid 6px rgb(168, 174, 255)";
     type_area.style.boxShadow = "15px 13px 0 rgb(168, 174, 255)";
@@ -30,7 +30,7 @@ trial_button.addEventListener("click", () => {
 //詐欺体験クイズボタン
 quiz_button.addEventListener("click", () => {
     mode = "詐欺体験クイズ";
-    trial_button.style.backgroundColor = "rgb(230,244,241)";
+    trial_button.style.backgroundColor = "rgba(230,244,241,0.95)";
     quiz_button.style.backgroundColor = "rgb(103,231,212)";
     type_area.style.border= "solid 6px rgb(103,231,212)";
     type_area.style.boxShadow = "15px 13px 0 rgb(103,231,212)";
@@ -158,6 +158,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+//ユーザー情報入力エリア
+let selectGender = document.getElementById("user-gender");
+let selectAge = document.getElementById("user-age");
+let selectFamily = document.getElementById("user-family");
+
+for(let i = 0; i < selectGender.options.length; i++){
+    if(selectGender.options[i].value == sessionStorage.getItem("user-gender")){
+        selectGender.options[i].selected = true;
+        break;
+    }
+}
+for(let i = 0; i < selectAge.options.length; i++){
+    if(selectAge.options[i].value == sessionStorage.getItem("user-age")){
+        selectAge.options[i].selected = true;
+        break;
+    }
+}
+for(let i = 0; i < selectFamily.options.length; i++){
+    if(selectFamily.options[i].value == sessionStorage.getItem("user-family")){
+        selectFamily.options[i].selected = true;
+        break;
+    }
+}
 //決定ボタン
 document.getElementById("submit").addEventListener("click", () => {
     //選択した詐欺種類　取得
@@ -171,6 +194,11 @@ document.getElementById("submit").addEventListener("click", () => {
     console.log("モード:" + mode +" 詐欺種類:" + selectType);
     sessionStorage.setItem("mode", mode);
     sessionStorage.setItem("type", selectType);
+
+    //選択したユーザーの特徴
+    sessionStorage.setItem("user-age", selectAge.value);
+    sessionStorage.setItem("user-gender", selectGender.value);
+    sessionStorage.setItem("user-family", selectFamily.value);
 
     if(mode == "詐欺体験"){
         location.href = "chat.html";

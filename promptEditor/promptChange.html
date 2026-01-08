@@ -54,12 +54,43 @@
 
 【電話をかけるところから始める場合は「それでは、電話の冒頭から始めてください。」、SMSやメールを表示してから電話を始める場合は「それでは、用意されたメール(SMS・はがき・インターネット広告)を表示し、私が電話をかけるところから始めてください。」と入力してください】</textarea>
         <br>
+        <div class="personality-area">
+            <h3>テスト用情報</h3>
+            性別：
+            <select id="user-gender">
+                <option value="指定なし" selected>指定なし</option>
+                <option value="男性">男性</option>
+                <option value="女性">女性</option>
+            </select>
+            <br>
+            年代：
+            <select id="user-age">
+                <option value="指定なし" selected>指定なし</option>
+                <option value="～20歳">～20歳</option>
+                <option value="20～30歳">20～30歳</option>
+                <option value="30～40歳">30～40歳</option>
+                <option value="40～50歳">40～50歳</option>
+                <option value="50～60歳">50～60歳</option>
+                <option value="60～70歳">60～70歳</option>
+                <option value="70～80歳">70～80歳</option>
+                <option value="80歳以上">80歳～</option>
+            </select>
+            <br>
+            家族構成：
+            <select id="user-family">
+                <option value="指定なし" selected>指定なし</option>
+                <option value="一人暮らし">一人暮らし</option>
+                <option value="親と同居">親と同居</option>
+                <option value="夫婦のみ">夫婦のみ</option>
+                <option value="子供あり">子供あり</option>
+            </select>
+        </div>
         <input type="button" id="test-button" value="テスト">
         <hr>
         <h4>詐欺判定クイズ(詐欺じゃないver)</h4>
         <textarea id="type-prompt-quiz" placeholder="AIに送信するプロンプトを入力してください。">【プロンプトテンプレ(【】内の文章は適宜置き換えてください)】
 
-これから、【詐欺の名称】っぽいけど【詐欺の名称】じゃないの対話シミュレーションを行います。
+これから、「【詐欺の名称】に酷似しているが、実際は【正当な内容】」の対話シミュレーションを行います。
 
 あなたの役割: 【AIにどのような詐欺師を演じさせるのか入力してください】
 あなたの目標: 【詐欺師の目標を入力して下さい】
@@ -71,6 +102,37 @@
 
 【電話をかけるところから始める場合は「それでは、電話の冒頭から始めてください。」、SMSやメールを表示してから電話を始める場合は「それでは、用意されたメール(SMS・はがき・インターネット広告)を表示し、私が電話をかけるところから始めてください。」と入力してください】</textarea>
         <br>
+        <div class="personality-area">
+            <h3>テスト用情報</h3>
+            性別：
+            <select id="user-gender-quiz">
+                <option value="指定なし" selected>指定なし</option>
+                <option value="男性">男性</option>
+                <option value="女性">女性</option>
+            </select>
+            <br>
+            年代：
+            <select id="user-age-quiz">
+                <option value="指定なし" selected>指定なし</option>
+                <option value="～20歳">～20歳</option>
+                <option value="20～30歳">20～30歳</option>
+                <option value="30～40歳">30～40歳</option>
+                <option value="40～50歳">40～50歳</option>
+                <option value="50～60歳">50～60歳</option>
+                <option value="60～70歳">60～70歳</option>
+                <option value="70～80歳">70～80歳</option>
+                <option value="80歳以上">80歳～</option>
+            </select>
+            <br>
+            家族構成：
+            <select id="user-family-quiz">
+                <option value="指定なし" selected>指定なし</option>
+                <option value="一人暮らし">一人暮らし</option>
+                <option value="親と同居">親と同居</option>
+                <option value="夫婦のみ">夫婦のみ</option>
+                <option value="子供あり">子供あり</option>
+            </select>
+        </div>
         <input type="button" id="test-button-quiz" value="テスト">
     </div>
 

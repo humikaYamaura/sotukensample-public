@@ -152,6 +152,14 @@ document.getElementById("test-button").addEventListener("click", () =>{
     sessionStorage.setItem("test_prompt",type_prompt.value);
     sessionStorage.setItem("mode", "test");
 
+    const selectGender = document.getElementById("user-gender").value;
+    const selectAge = document.getElementById("user-age").value;
+    const selectFamily = document.getElementById("user-family").value;
+
+    sessionStorage.setItem("user-age", selectAge);
+    sessionStorage.setItem("user-gender", selectGender);
+    sessionStorage.setItem("user-family", selectFamily);
+
     window.open("../chat.html","_blank");
 });
 
@@ -163,6 +171,14 @@ document.getElementById("test-button-quiz").addEventListener("click",() =>{
     sessionStorage.setItem("test_explain",type_explain_replace);
     sessionStorage.setItem("test_prompt",type_prompt_quiz.value);
     sessionStorage.setItem("mode", "test");
+
+    const selectGender = document.getElementById("user-gender-quiz").value;
+    const selectAge = document.getElementById("user-age-quiz").value;
+    const selectFamily = document.getElementById("user-family-quiz").value;
+
+    sessionStorage.setItem("user-age", selectAge);
+    sessionStorage.setItem("user-gender", selectGender);
+    sessionStorage.setItem("user-family", selectFamily);
 
     window.open("../chat.html","_blank");
 });
@@ -277,6 +293,19 @@ submit_button.addEventListener("click", async() => {
             if (error2) throw new Error(error2.message);
 
             console.log("Supabase 追加データ:", data2);
+
+            //prompts_quizテーブル
+            const { data3, error3 } = await supabase
+            .from("prompts_quiz")
+            .insert({
+                type: type_name.value,
+                content: type_prompt_quiz.value
+            })
+            .eq('type',before_name);
+
+            if (error3) throw new Error(error3.message);
+
+            console.log("Supabase 追加データ:", data3);
 
             alert("追加に成功しました。変更ページに戻ります。")
             window.close();

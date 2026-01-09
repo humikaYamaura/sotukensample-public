@@ -310,7 +310,11 @@ submit_button.addEventListener("click", async() => {
             alert("追加に成功しました。変更ページに戻ります。")
             window.close();
         }catch(err){
-            alert("追加に失敗しました。再度保存ボタンを押してください。:" + err);
+            if(err.message =='duplicate key value violates unique constraint "explanation_pkey"'){
+                alert("既存の詐欺名と重複しています。別の名称を入力してください。");
+            }else{
+                alert("追加に失敗しました。再度保存ボタンを押してください。:" + err);
+            }
             submit_button.disabled = false;
             submit_button.value = "☑ 保存";
         }

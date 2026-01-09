@@ -63,8 +63,11 @@ pass_button.addEventListener("click",async () =>{
     console.log("認証成功");
     sessionStorage.setItem("id", id);
     sessionStorage.setItem("pass",pass);
+    
+    //認証完了後、読み込み開始
     document.getElementById("pass").style.display = "none";
     document.getElementById("view").style.display = "block";
+    load();
   }catch(error){
     if(error.message == "missing email or phone" || error.message == "Invalid login credentials"){
       alert("認証に失敗しました。");
@@ -78,27 +81,8 @@ pass_button.addEventListener("click",async () =>{
 
 const add_button = document.getElementById("add-button");
 const check_text = document.getElementById("check-text");
-document.addEventListener("DOMContentLoaded", async() => {
-  //認証処理
-  check_text.innerText = "認証情報確認中・・・";
-  const id = sessionStorage.getItem("id");
-  const pass = sessionStorage.getItem("pass");
-  if(id && pass){
-    try{
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: id,
-        password: pass,
-      });
-      if(error){
-        throw new Error(error.message);
-      }
-      console.log("認証成功");
-      document.getElementById("pass").style.display = "none";
-      document.getElementById("view").style.display = "block";
-    }catch(error){
-      console.log("認証失敗", error.message);
-    }
-  }
+//詐欺項目の読み込み
+const load = async() =>{
   check_text.innerText = "";
 
   const type_table = document.getElementById("type-table");
@@ -148,6 +132,8 @@ document.addEventListener("DOMContentLoaded", async() => {
           await deleteColmun("explanation",item.type);
           //prompts
           await deleteColmun("prompts",item.type);
+          //prompts_quiz
+          await deleteColmun("prompts_quiz",item.type);
 
           alert(item.type + "を削除しました。");
           location.reload();
@@ -162,6 +148,32 @@ document.addEventListener("DOMContentLoaded", async() => {
     load_text.innerText = "※変更が反映されない場合、リロードを行ってください。";
   });
   add_button.style.display = "inline";
+}
+
+document.addEventListener("DOMContentLoaded", async() => {
+  //認証処理
+  check_text.innerText = "認証情報確認中・・・";
+  const id = sessionStorage.getItem("id");
+  const pass = sessionStorage.getItem("pass");
+  if(id && pass){
+    try{
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: id,
+        password: pass,
+      });
+      if(error){
+        throw new Error(error.message);
+      }
+      console.log("認証成功");
+      //認証完了後、読み込み開始
+      document.getElementById("pass").style.display = "none";
+      document.getElementById("view").style.display = "block";
+      load();
+    }catch(error){
+      console.log("認証失敗", error.message);
+    }
+  }
+  check_text.innerText = "";
 });
 
 //追加ボタン

@@ -123,7 +123,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 }
 
 #type{
-    background-color: rgba(255, 255, 255 ,0.9);
+    background-color: rgba(255, 255, 255 ,0.95);
     border-radius: 34px;
     max-width: 1291px;
     margin: auto;
@@ -287,7 +287,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 }
 
 #chat{
-    background-color: rgba(255, 255, 255 ,0.8);
+    background-color: rgba(255, 255, 255 ,0.85);
     border-radius: 34px;
     max-width: 1291px;
     margin: auto;
@@ -497,7 +497,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 /* ここからクイズチャット画面 */
 
 #quiz-chat{
-    background-color: rgba(255, 255, 255 ,0.8);
+    background-color: rgba(255, 255, 255 ,0.85);
     border-radius: 34px;
     max-width: 1291px;
     margin: auto;

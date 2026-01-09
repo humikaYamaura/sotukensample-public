@@ -268,6 +268,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             sessionStorage.setItem("promptSource", source);
         }
 
+        //ユーザーの情報を追加
         let user_info = "";
         if(user_gender && user_gender != "指定なし"){
             user_info += "性別が「"+ user_gender +"」";
@@ -282,6 +283,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         if(user_info){
             user_info = "\n【ユーザーの特徴】\n 私(ユーザー)は、" + user_info + "です。\nこれらの情報を適宜用いてシミュレーションを行ってください。\n\n";
         }else{
+            //指定された情報がない場合
             user_info = "\n";
         }
 

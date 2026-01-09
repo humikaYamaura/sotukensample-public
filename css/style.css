@@ -1,8 +1,45 @@
-html{
+/* 背景 */
+html::before{
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgb(230,244,241);
-    /*background-image:url("../img/sagishi_man.png");
-    background-attachment: fixed;*/
+    background-image:url("../img/3845002_s.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    filter: blur(5px);
+    z-index: -1;
 }
+#html-chat::before{
+    background-image:url("../img/5006170_s.jpg");
+}
+#html-quiz::before{
+    background-image:url("../img/22402411_s.jpg");
+}
+#html-review::before{
+    background-image:url("../img/4009941_s.jpg");
+}
+#html-edit::before{
+    background-image:url("../img/police_man_kenju_gun.png");
+    background-size:auto;
+    filter: blur(0);
+}
+
+h1, h2, h3, h4, h5, h6{
+    text-shadow: 
+       2px  2px 1px #ffffff,
+      -2px  2px 1px #ffffff,
+       2px -2px 1px #ffffff,
+      -2px -2px 1px #ffffff,
+       2px  0px 1px #ffffff,
+       0px  2px 1px #ffffff,
+      -2px  0px 1px #ffffff,
+       0px -2px 1px #ffffff;
+}
+
 input[type="button"],input[type="submit"],input[type="radio"] + .label{
     cursor: pointer;
 }
@@ -250,7 +287,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 }
 
 #chat{
-    background-color: white;
+    background-color: rgba(255, 255, 255 ,0.8);
     border-radius: 34px;
     max-width: 1291px;
     margin: auto;
@@ -351,6 +388,15 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     display: flex;
     align-items: center;
     gap: 10px;
+    text-shadow: 
+       2px  2px 1px #ffffff,
+      -2px  2px 1px #ffffff,
+       2px -2px 1px #ffffff,
+      -2px -2px 1px #ffffff,
+       2px  0px 1px #ffffff,
+       0px  2px 1px #ffffff,
+      -2px  0px 1px #ffffff,
+       0px -2px 1px #ffffff;
 }
 #voice-area select{
     font-size: 16px;
@@ -451,7 +497,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
 /* ここからクイズチャット画面 */
 
 #quiz-chat{
-    background-color: white;
+    background-color: rgba(255, 255, 255 ,0.8);
     border-radius: 34px;
     max-width: 1291px;
     margin: auto;
@@ -483,6 +529,17 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     transform: rotate(35deg);
 }
 
+#quiz-form{
+    text-shadow: 
+       2px  2px 1px #ffffff,
+      -2px  2px 1px #ffffff,
+       2px -2px 1px #ffffff,
+      -2px -2px 1px #ffffff,
+       2px  0px 1px #ffffff,
+       0px  2px 1px #ffffff,
+      -2px  0px 1px #ffffff,
+       0px -2px 1px #ffffff;
+}
 
 /* ここまでクイズチャット画面 */
 
@@ -494,7 +551,9 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     min-height: 500px;
 }
 #pass #pass-form{
-    margin: auto;
+    margin: 50px auto;
+    max-width: 750px;
+    background-color: rgba(255, 255, 255 ,0.9);
 }
 #pass #pass-form input{
     margin: 30px;
@@ -512,6 +571,7 @@ input[type="button"],input[type="submit"],input[type="radio"] + .label{
     padding: 10px;
     border:#B7C8FF solid 3px;
     border-collapse: collapse;
+    background-color: white;
 }
 #type #type-table th, #type #type-table td{
     border-top: #B7C8FF solid 3px;

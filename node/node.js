@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || 3001
 
 app.use(cors({
-origin: "[http://127.0.0.1:5501](http://127.0.0.1:5501/)",
+origin: "[http://127.0.0.1:5500](http://127.0.0.1:5500/)",
 credentials: true
 }));
 app.use(cors({ origin: 'https://tokusyusagi-simulator.onrender.com' }));

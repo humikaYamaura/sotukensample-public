@@ -63,7 +63,7 @@ const chatBox = document.getElementById('scroll');
 //セッション削除
 const session_del = async function(id){
     try{
-        const response = await fetch("http://localhost:3001/delete",{
+        const response = await fetch("https://tokusyusagi-simulator.onrender.com/delete",{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -191,7 +191,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             //テスト遷移時に格納されたプロンプトを取得
             prompt = sessionStorage.getItem("test_prompt");
             //チャットセッション開始
-            const response = await fetch("http://localhost:3001/start");
+            const response = await fetch("https://tokusyusagi-simulator.onrender.comhttp://localhost:3001/start");
             if(!response.ok){
                 throw new Error(response.statusText);
             }
@@ -247,7 +247,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             const type_prompt = new Map(promptArray.map(item => [item.type, item.content]));
 
             //チャットセッション開始
-            const response = await fetch("http://localhost:3001/start");
+            const response = await fetch("https://tokusyusagi-simulator.onrender.com/start");
             if(!response.ok){
                 throw new Error(response.statusText);
             }
@@ -288,7 +288,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         }
 
         //入力したテキストを送信
-        const response2 = await fetch("http://localhost:3001/send",{
+        const response2 = await fetch("https://tokusyusagi-simulator.onrender.com/send",{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -429,7 +429,7 @@ const sendText = async function(text){
     const prompt = formattedText;
     try{
         //入力したテキストを送信
-        const response = await fetch("http://localhost:3001/send",{
+        const response = await fetch("https://tokusyusagi-simulator.onrender.com/send",{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',

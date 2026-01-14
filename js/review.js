@@ -188,7 +188,7 @@ if (source === "prompts" && answer) {
         msg.innerHTML = " ！！不正解！！<br>このクイズは詐欺です";
     }
 
-} else if (source === "prompts_quiz") {
+} else if (source === "prompts_quiz" && answer) {
     if (answer === "no") {
         msg.innerHTML = " ！！正解！！<br>このクイズは詐欺じゃありません";
     } else {

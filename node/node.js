@@ -8,6 +8,11 @@ const { message } = require("statuses");
 const app = express();
 const port = process.env.PORT || 3001
 
+app.use(cors({
+origin: "[http://127.0.0.1:5501](http://127.0.0.1:5501/)",
+credentials: true
+}));
+
 const ai = new GoogleGenAI({});
 const MOCK_MODE = process.env.MOCK_MODE === 'true' || !process.env.GEMINI_API_KEY;
 if (MOCK_MODE) {
@@ -24,7 +29,7 @@ app.use(express.json());
 // Add static serving of the repo root so the frontend can be served from the backend
 app.use(express.static(path.join(__dirname, '..')));
 // AWSにデプロイしたら、この設定を変えること
-app.use(cors({origin: ["http://localhost:5500","http://127.0.0.1:5500","https://tokushusagi-simulation.onrender.com"]}));
+app.use(cors({origin: ["http://localhost:5501","http://127.0.0.1:5501","https://tokushusagi-simulation.onrender.com"]}));
 
 async function initialize() {
     const {v4: uuidv4} = await import("uuid");

@@ -12,6 +12,7 @@ app.use(cors({
 origin: "[http://127.0.0.1:5501](http://127.0.0.1:5501/)",
 credentials: true
 }));
+app.use(cors({ origin: 'https://tokusyusagi-simulator.onrender.com' }));
 
 const ai = new GoogleGenAI({});
 const MOCK_MODE = process.env.MOCK_MODE === 'true' || !process.env.GEMINI_API_KEY;

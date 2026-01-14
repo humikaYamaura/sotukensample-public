@@ -181,7 +181,7 @@ if(sessionStorage.getItem("mode") == "詐欺体験クイズ"){
 }
 
 }
-if (source === "prompts") {
+if (source === "prompts" && answer) {
     if (answer === "yes") {
         msg.innerHTML = " ！！正解！！<br>このクイズは詐欺です";
     } else {

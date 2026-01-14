@@ -191,7 +191,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             //テスト遷移時に格納されたプロンプトを取得
             prompt = sessionStorage.getItem("test_prompt");
             //チャットセッション開始
-            const response = await fetch("https://tokusyusagi-simulator.onrender.comhttp://localhost:3001/start");
+            const response = await fetch("https://tokusyusagi-simulator.onrender.com/start");
             if(!response.ok){
                 throw new Error(response.statusText);
             }

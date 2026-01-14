@@ -128,7 +128,7 @@ if(sessionStorage.getItem("mode") == "test"){
 const review_history = async() => {
     typeText("返答評価生成中・・・",review,100);
     try{
-        const response = await fetch("http://localhost:3001/send",{
+        const response = await fetch("https://tokusyusagi-simulator.onrender.com/send",{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
